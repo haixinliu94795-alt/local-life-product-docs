@@ -1,0 +1,13 @@
+flowchart LR
+    A[Payment Success] --> B[In-transit Funds]
+    B --> C[Fulfilled / Write-off]
+    C --> D[Clearing Allocation]
+    D --> E[Settlement Preparation / Netting]
+    E --> F[Settlement Batch & Bill]
+    F --> G[Accounting Posting]
+    G --> H[Withdrawable Balance]
+    H --> I[Payout]
+    D -.-> R[Reconciliation]
+    E -.-> R
+    F -.-> R
+    G -.-> R

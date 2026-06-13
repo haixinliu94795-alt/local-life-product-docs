@@ -1,0 +1,14 @@
+flowchart LR
+    O[Order/Fulfillment/Refund] --> I[Intake Context]
+    I --> C[Clearing Context]
+    C --> T[In-transit & Pending Context]
+    T --> S[Settlement Preparation Context]
+    S --> B[Settlement Billing Context]
+    B --> A[Accounting Orchestration]
+    A --> ACC[Accounting Platform]
+    ACC --> Q[Merchant Finance Query]
+    P[Payout Platform] --> Q
+    C -.-> R[Reconciliation Context]
+    S -.-> R
+    B -.-> R
+    A -.-> R

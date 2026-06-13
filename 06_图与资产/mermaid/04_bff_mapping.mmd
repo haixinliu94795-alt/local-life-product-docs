@@ -1,0 +1,14 @@
+flowchart TD
+    A[Core Status] --> B1[IN_TRANSIT_UNMATURED]
+    A --> B2[SETTLEMENT_ELIGIBLE]
+    A --> B3[LOCKED_FOR_SETTLEMENT]
+    A --> B4[ACCOUNTING_PROCESSING]
+    A --> B5[ACCOUNTED]
+    A --> B6[ON_HOLD]
+    B1 --> C[Merchant App Pending Display]
+    B2 --> C
+    B3 --> C
+    B4 --> C
+    B2 --> D[Admin Merchant Payable]
+    B5 --> E[Merchant Settled Display]
+    B6 --> F[Hold/Frozen Display - optional]
