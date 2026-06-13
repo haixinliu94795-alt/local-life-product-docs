@@ -1,0 +1,115 @@
+{
+  "project": "本地生活美食封板功能",
+  "version": "V001",
+  "date": "2026-06-13",
+  "source_package": "本地生活_美食封板_V001_20260613_原始交付包.zip",
+  "source_package_sha256": "84a853662d51f862312bbb178462449b34a90fa20239e36feaa830acec7babc8",
+  "source_package_size": 44145762,
+  "source_files": [
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/",
+      "display_name": "本地生活_美食封板_V001_20260613/",
+      "is_dir": true,
+      "file_size": 0,
+      "compress_size": 0,
+      "crc": "00000000",
+      "modified_time": "2026-06-13 16:39:30"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/01_原始RP/",
+      "display_name": "本地生活_美食封板_V001_20260613/01_原始RP/",
+      "is_dir": true,
+      "file_size": 0,
+      "compress_size": 0,
+      "crc": "00000000",
+      "modified_time": "2026-06-13 16:34:08"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/01_原始RP/本地生活美食封板功能.rp",
+      "display_name": "本地生活_美食封板_V001_20260613/01_原始RP/本地生活美食封板功能.rp",
+      "is_dir": false,
+      "file_size": 9120904,
+      "compress_size": 8899797,
+      "crc": "8b515031",
+      "modified_time": "2026-06-13 15:02:46",
+      "sha256": "ca8a2b9cde5fc0d9bea312f1a9c5b2c9a7a08848389396ecab69e2251963463e"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/02_HTML原型/",
+      "display_name": "本地生活_美食封板_V001_20260613/02_HTML原型/",
+      "is_dir": true,
+      "file_size": 0,
+      "compress_size": 0,
+      "crc": "00000000",
+      "modified_time": "2026-06-13 16:35:30"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/02_HTML原型/本地生活_美食封板_V001_20260613_HTML.zip",
+      "display_name": "本地生活_美食封板_V001_20260613/02_HTML原型/本地生活_美食封板_V001_20260613_HTML.zip",
+      "is_dir": false,
+      "file_size": 9010498,
+      "compress_size": 7966216,
+      "crc": "d06caf58",
+      "modified_time": "2026-06-13 16:35:26",
+      "sha256": "1a78fc138d0eb220f56f519050d8d0f9a8b62ae10fdaa3d9c87f61d0fcf4c4c5"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/03_Word规格说明/",
+      "display_name": "本地生活_美食封板_V001_20260613/03_Word规格说明/",
+      "is_dir": true,
+      "file_size": 0,
+      "compress_size": 0,
+      "crc": "00000000",
+      "modified_time": "2026-06-13 16:35:56"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/03_Word规格说明/本地生活美食封板功能.docx",
+      "display_name": "本地生活_美食封板_V001_20260613/03_Word规格说明/本地生活美食封板功能.docx",
+      "is_dir": false,
+      "file_size": 15378217,
+      "compress_size": 15281768,
+      "crc": "189146ce",
+      "modified_time": "2026-06-13 16:26:00",
+      "sha256": "7728bf3789dba460cb5e774785daecdd220d745d889b1182d46e5ca21e7ca3b2"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/04_页面快照/",
+      "display_name": "本地生活_美食封板_V001_20260613/04_页面快照/",
+      "is_dir": true,
+      "file_size": 0,
+      "compress_size": 0,
+      "crc": "00000000",
+      "modified_time": "2026-06-13 16:39:14"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/04_页面快照/本地生活_美食封板_V001_20260613_页面图片.zip",
+      "display_name": "本地生活_美食封板_V001_20260613/04_页面快照/本地生活_美食封板_V001_20260613_页面图片.zip",
+      "is_dir": false,
+      "file_size": 12005244,
+      "compress_size": 11993517,
+      "crc": "c817c509",
+      "modified_time": "2026-06-13 16:39:12",
+      "sha256": "885cb1347b8eed25db8f3897e984283680ef13e35279620f094a2ad78efd86c4"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/05_版本说明/",
+      "display_name": "本地生活_美食封板_V001_20260613/05_版本说明/",
+      "is_dir": true,
+      "file_size": 0,
+      "compress_size": 0,
+      "crc": "00000000",
+      "modified_time": "2026-06-13 16:40:04"
+    },
+    {
+      "raw_name": "本地生活_美食封板_V001_20260613/05_版本说明/新建文本文档.md",
+      "display_name": "本地生活_美食封板_V001_20260613/05_版本说明/新建文本文档.md",
+      "is_dir": false,
+      "file_size": 212,
+      "compress_size": 188,
+      "crc": "9f890282",
+      "modified_time": "2026-06-13 16:39:54",
+      "sha256": "8449b16e3883c1dba2453de7623c2b596ae2f48d42e2e07ba65234127a3b09f9"
+    }
+  ],
+  "note": "本文件用于产品文档追溯。原始交付包已原样纳入本项目的 01_原始输入 目录。"
+}
