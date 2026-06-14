@@ -1,0 +1,180 @@
+openapi: 3.0.3
+info:
+  title: Clearing Settlement Platform P0 API
+  version: V004
+  description: 本地生活清结算平台 P0 普通商品接口契约
+paths:
+  /internal/ccs/events:
+    post:
+      summary: 接入清结算来源事件
+      operationId: acceptSourceEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceEventAcceptCommand'
+      responses:
+        '200':
+          description: 接收结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventAcceptResult'
+  /admin/ccs/merchant-payable/page:
+    get:
+      summary: 后台商家应付分页
+      operationId: pageMerchantPayable
+      parameters:
+        - name: merchantId
+          in: query
+          schema: { type: string }
+        - name: businessScene
+          in: query
+          schema: { type: string }
+        - name: eligibleStartTime
+          in: query
+          schema: { type: string, format: date-time }
+        - name: eligibleEndTime
+          in: query
+          schema: { type: string, format: date-time }
+      responses:
+        '200':
+          description: 分页结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageMerchantPayableResult'
+  /admin/ccs/merchant-payable/settle:
+    post:
+      summary: 统一确认结算，单条/批量共用
+      operationId: confirmMerchantSettlement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmMerchantSettlementCommand'
+      responses:
+        '200':
+          description: 结算结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmSettlementResult'
+  /admin/ccs/settlement-bills/page:
+    get:
+      summary: 后台结算单分页
+      operationId: pageSettlementBills
+      responses:
+        '200':
+          description: 结算单分页
+  /admin/ccs/settlement-bills/{billNo}/retry-accounting:
+    post:
+      summary: 重试账务入账
+      operationId: retryAccounting
+      parameters:
+        - name: billNo
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: 重试结果
+  /merchant/ccs/finance/summary:
+    get:
+      summary: 商户端资金汇总读模型
+      operationId: merchantFinanceSummary
+      responses:
+        '200':
+          description: 资金汇总
+  /merchant/ccs/pending-items/page:
+    get:
+      summary: 商户端待结算明细
+      operationId: merchantPendingItems
+      responses:
+        '200':
+          description: 待结算明细
+  /merchant/ccs/settlement-bills/{billNo}:
+    get:
+      summary: 商户端结算详情
+      operationId: merchantSettlementBillDetail
+      parameters:
+        - name: billNo
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: 结算详情
+components:
+  schemas:
+    SourceEventAcceptCommand:
+      type: object
+      required: [callerSystem, bizDomain, bizNo, businessScene, eventType, sourceEventNo, eventOccurTime, idempotentKey, requestHash, payload]
+      properties:
+        callerSystem: { type: string }
+        bizDomain: { type: string }
+        bizNo: { type: string }
+        businessScene: { type: string }
+        eventType: { type: string, enum: [WRITE_OFF_COMPLETED, REFUND_SUCCESS, WRITE_OFF_CANCELED] }
+        sourceEventNo: { type: string }
+        sourceOrderNo: { type: string }
+        sourceWriteOffNo: { type: string }
+        sourceRefundNo: { type: string }
+        eventOccurTime: { type: string, format: date-time }
+        idempotentKey: { type: string }
+        requestHash: { type: string }
+        payload: { type: object }
+    EventAcceptResult:
+      type: object
+      properties:
+        eventNo: { type: string }
+        accepted: { type: boolean }
+        duplicate: { type: boolean }
+    ConfirmMerchantSettlementCommand:
+      type: object
+      required: [callerSystem, bizDomain, bizNo, businessScene, merchantId, pendingNos, idempotentKey, requestHash, operatorId]
+      properties:
+        callerSystem: { type: string }
+        bizDomain: { type: string }
+        bizNo: { type: string }
+        businessScene: { type: string }
+        merchantId: { type: string }
+        pendingNos:
+          type: array
+          items: { type: string }
+        voucherUrls:
+          type: array
+          items: { type: string }
+        idempotentKey: { type: string }
+        requestHash: { type: string }
+        operatorId: { type: string }
+        operatorName: { type: string }
+        remark: { type: string }
+    ConfirmSettlementResult:
+      type: object
+      properties:
+        billNo: { type: string }
+        batchNo: { type: string }
+        billStatus: { type: string }
+        accountingStatus: { type: string }
+        duplicate: { type: boolean }
+    PageMerchantPayableResult:
+      type: object
+      properties:
+        total: { type: integer, format: int64 }
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantPayableItem'
+    MerchantPayableItem:
+      type: object
+      properties:
+        pendingNo: { type: string }
+        merchantId: { type: string }
+        sourceOrderNo: { type: string }
+        writeOffNo: { type: string }
+        settlementAmountCent: { type: integer, format: int64 }
+        eligibleTime: { type: string, format: date-time }
+        lifecycleStatus: { type: string }

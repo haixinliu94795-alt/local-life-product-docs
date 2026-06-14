@@ -1,0 +1,17 @@
+
+digraph G {
+  graph [rankdir=TB, bgcolor="white", fontname="Noto Sans CJK SC"];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F8FA", color="#4B5563", fontname="Noto Sans CJK SC", fontsize=12];
+  edge [color="#6B7280", fontname="Noto Sans CJK SC", fontsize=10];
+  A [label="Controller / Facade
+后台、BFF、事件接入"];
+  B [label="Application Service
+编排事务、幂等、调用领域服务"];
+  C [label="Domain Model
+聚合根、领域服务、不变量"];
+  D [label="Repository / Mapper
+ccs_* 表持久化"];
+  E [label="Infrastructure Adapter
+账户账务、旧 finance_detail、旧 BFF"];
+  A -> B -> C -> D; B -> E;
+}

@@ -1,0 +1,21 @@
+
+digraph G {
+  graph [rankdir=LR, bgcolor="white", fontname="Noto Sans CJK SC"];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F8FA", color="#4B5563", fontname="Noto Sans CJK SC", fontsize=12, margin="0.12,0.08"];
+  edge [color="#4B5563", fontname="Noto Sans CJK SC", fontsize=10];
+  A [label="核销完成事件
+WRITE_OFF_COMPLETED"];
+  B [label="清分
+订单级资金归属"];
+  C [label="清算
+在途/可结算/锁定"];
+  D [label="后台商家应付
+只展示 ELIGIBLE"];
+  E [label="统一确认结算
+单条/批量同方法"];
+  F [label="结算批次/结算单/明细"];
+  G [label="账务入账编排
+recordProductSettlement"];
+  H [label="商户账户可提现余额"];
+  A -> B -> C -> D -> E -> F -> G -> H;
+}
