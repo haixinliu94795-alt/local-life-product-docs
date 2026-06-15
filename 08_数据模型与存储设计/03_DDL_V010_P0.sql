@@ -1,6 +1,6 @@
--- 清结算平台 V009 P0 DDL
+-- 清结算平台 V010 P0 DDL
 -- 约定：金额字段 BIGINT，单位分，人民币；比例字段 ratio_bp，10000 = 100%。
--- V009 吸收行业案例中的结算模式、结算周期、发起方式、最小/最大结算金额、留存金额、规则绑定对象等成熟能力。
+-- V010 吸收行业案例中的结算模式、结算周期、发起方式、最小/最大结算金额、留存金额、规则绑定对象等成熟能力。
 -- P0 不设计退款、冻结/止付、自动出款、币种、多租户字段；相关能力仅作为 P1/P2 扩展上下文。
 
 
@@ -38,7 +38,7 @@ CREATE TABLE ccs_settlement_policy_version (
   policy_no VARCHAR(64) NOT NULL COMMENT '策略编号',
   version_no BIGINT NOT NULL COMMENT '策略版本号',
   version_status VARCHAR(32) NOT NULL DEFAULT 'DRAFT' COMMENT '版本状态：DRAFT/EFFECTIVE/EXPIRED/CANCELED',
-  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式：INTERNAL_ACCOUNT/DIRECT_BANK/EXTERNAL_PAYOUT，P0 固定 INTERNAL_ACCOUNT',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 固定 INTERNAL_ACCOUNT',
   initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式：OPERATOR_MANUAL/AUTO/MERCHANT_SELF_SERVICE，P0 固定 OPERATOR_MANUAL',
   auto_settlement_enabled TINYINT NOT NULL DEFAULT 0 COMMENT '是否启用自动结算，P0 固定 0',
   min_settlement_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '最小结算金额，单位分，0 表示不限制',
@@ -251,7 +251,7 @@ CREATE TABLE ccs_settlement_position (
   business_scene VARCHAR(64) NOT NULL COMMENT '业务场景',
   policy_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略编号',
   policy_version_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略版本编号',
-  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 INTERNAL_ACCOUNT',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 固定 INTERNAL_ACCOUNT',
   initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式，P0 OPERATOR_MANUAL',
   participant_role VARCHAR(64) NOT NULL COMMENT '参与方角色',
   participant_type VARCHAR(64) NOT NULL DEFAULT '' COMMENT '参与方类型',
@@ -263,6 +263,8 @@ CREATE TABLE ccs_settlement_position (
   settlement_period_start_time DATETIME(3) NOT NULL COMMENT '结算归属周期开始时间',
   settlement_period_end_time DATETIME(3) NOT NULL COMMENT '结算归属周期结束时间',
   eligible_time DATETIME(3) NOT NULL COMMENT '可结算时间',
+  last_maturity_attempt_time DATETIME(3) DEFAULT NULL COMMENT '最近账期成熟推进尝试时间',
+  maturity_attempt_count INT NOT NULL DEFAULT 0 COMMENT '账期成熟推进尝试次数',
   lifecycle_status VARCHAR(32) NOT NULL DEFAULT 'IN_TRANSIT' COMMENT '生命周期状态：IN_TRANSIT/ELIGIBLE/LOCKED/ACCOUNTING_PROCESSING/ACCOUNTING_FAILED/UNKNOWN/ACCOUNTED/CANCELED',
   locked_batch_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '锁定批次号',
   locked_bill_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '锁定结算单号',
@@ -292,7 +294,7 @@ CREATE TABLE ccs_settlement_batch (
   business_scene VARCHAR(64) NOT NULL COMMENT '业务场景',
   policy_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略编号',
   policy_version_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略版本编号',
-  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 INTERNAL_ACCOUNT',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 固定 INTERNAL_ACCOUNT',
   initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式，P0 OPERATOR_MANUAL',
   merchant_no VARCHAR(64) NOT NULL COMMENT '商户编号',
   participant_role VARCHAR(64) NOT NULL COMMENT '结算主体角色',
@@ -327,7 +329,7 @@ CREATE TABLE ccs_settlement_bill (
   business_scene VARCHAR(64) NOT NULL COMMENT '业务场景',
   policy_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略编号',
   policy_version_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略版本编号',
-  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 INTERNAL_ACCOUNT',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 固定 INTERNAL_ACCOUNT',
   initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式，P0 OPERATOR_MANUAL',
   merchant_no VARCHAR(64) NOT NULL COMMENT '商户编号',
   participant_role VARCHAR(64) NOT NULL COMMENT '结算主体角色',
@@ -408,6 +410,11 @@ CREATE TABLE ccs_accounting_posting_order (
   request_hash VARCHAR(128) NOT NULL COMMENT '请求核心参数指纹',
   retry_count INT NOT NULL DEFAULT 0 COMMENT '重试次数',
   last_request_time DATETIME(3) DEFAULT NULL COMMENT '最近请求时间',
+  unknown_first_time DATETIME(3) DEFAULT NULL COMMENT '首次进入UNKNOWN时间',
+  last_query_time DATETIME(3) DEFAULT NULL COMMENT '最近账务查询时间',
+  next_query_time DATETIME(3) DEFAULT NULL COMMENT '下次账务查询时间',
+  query_attempt_count INT NOT NULL DEFAULT 0 COMMENT '账务UNKNOWN查询次数',
+  manual_intervention_required TINYINT NOT NULL DEFAULT 0 COMMENT '是否需要人工介入',
   last_error_code VARCHAR(64) NOT NULL DEFAULT '' COMMENT '最后错误码',
   last_error_message VARCHAR(512) NOT NULL DEFAULT '' COMMENT '最后错误信息',
   version BIGINT NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
@@ -420,6 +427,7 @@ CREATE TABLE ccs_accounting_posting_order (
   UNIQUE KEY uk_accounting_idempotent (accounting_idempotent_key),
   UNIQUE KEY uk_posting_biz (caller_system, biz_domain, biz_no, accounting_scene),
   KEY idx_posting_status (posting_status, update_time),
+  KEY idx_posting_unknown_query (posting_status, next_query_time, manual_intervention_required),
   KEY idx_posting_accounting_request (accounting_request_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='账务入账单表';
 

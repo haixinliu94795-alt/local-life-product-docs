@@ -1,72 +1,101 @@
 # Codex 开发任务卡
 
+## 1. 总体要求
+
+本任务包只允许实现 V010 P0 范围：正向清结算闭环、账期成熟、结算确认、账务入账、UNKNOWN 补偿、幂等 request_hash、基础查询和测试。
+
+禁止实现：退款、冻结/止付、出款、BFF 展示聚合、百万级导出、容量规划、分库分表、复杂任务调度。
+
 ## Task 01：新增清结算模块骨架
 
-- 输入：本方案 `05_DDD领域设计`。
-- 输出：模块、包结构、基础枚举、公共 DTO。
-- 禁止：实现业务逻辑。
-- 验收：能编译，包结构符合方案。
+| 项 | 内容 |
+|---|---|
+| 目标 | 新增 `local-live-module-clearing-settlement` 或等价模块。 |
+| 依赖 | 无 |
+| 交付 | 包结构、基础配置、领域包、应用包、基础 Repository 接口。 |
+| 禁止 | 不接入旧结算 Service 逻辑。 |
+| 验收 | 模块可编译，包结构符合 DDD 分层。 |
 
-## Task 02：落 DDL、Entity、Mapper、Repository
+## Task 02：落地 V010 DDL / Entity / Mapper
 
-- 输入：`08_数据模型与存储设计/03_DDL_V009_P0.sql`。
-- 输出：Entity、Mapper、Repository。
-- 禁止：字段名自由发挥。
-- 验收：DDL-Entity-Mapper 一致。
+| 项 | 内容 |
+|---|---|
+| 目标 | 执行 `03_DDL_V010_P0.sql`，生成 Entity/Mapper/Repository。 |
+| 依赖 | Task 01 |
+| 必须 | 金额 BIGINT 分；无 currency；无 tenant_id；状态枚举一致。 |
+| 禁止 | 临时新增旧 `finance_detail` 映射字段。 |
+| 验收 | DDL-Entity-Mapper 一致性检查通过。 |
 
-## Task 03：实现策略配置和规则快照
+## Task 03：实现 request_hash 公共组件
 
-- 输入：`06_策略与清分设计`。
-- 输出：策略 CRUD、发布、快照读取。
-- 验收：清分能读取有效策略版本。
+| 项 | 内容 |
+|---|---|
+| 目标 | 实现 `RequestHashCalculator`。 |
+| 依赖 | Task 01 |
+| 规则 | SHA-256、Canonical JSON、字段名升序、数组排序、空值不参与。 |
+| 验收 | SourceEvent、ConfirmSettlement、AccountingPosting 三类 hash 单测通过。 |
 
-## Task 04：实现来源事件接入和幂等
+## Task 04：实现来源事件接入和清分
 
-- 输入：`09_接口契约与事件协议/05_Event事件契约.md`。
-- 输出：事件接入接口、幂等、request_hash。
-- 验收：重复事件和冲突事件测试通过。
+| 项 | 内容 |
+|---|---|
+| 目标 | 接入 `WRITE_OFF_COMPLETED/FULFILLMENT_COMPLETED` 事件，生成清分结果和头寸。 |
+| 依赖 | Task 02、Task 03 |
+| 必须 | 事件幂等、清分状态机、清分明细金额校验。 |
+| 验收 | 重复事件返回原结果，冲突事件拒绝。 |
 
-## Task 05：实现清分结果和头寸生成
+## Task 05：实现账期成熟任务
 
-- 输入：`07_核心流程与状态机/02_清分流程.md`。
-- 输出：ClearingResult、ClearingItem、Position。
-- 验收：金额校验、状态机测试通过。
+| 项 | 内容 |
+|---|---|
+| 目标 | 实现 `SettlementPositionMaturityJob`。 |
+| 依赖 | Task 04 |
+| 规则 | 每 5 分钟一次；单轮 200 条；只推进 `IN_TRANSIT -> ELIGIBLE`。 |
+| 禁止 | 分片、容量规划、复杂任务平台。 |
+| 验收 | 成熟任务状态机测试通过。 |
 
-## Task 06：实现统一确认结算
+## Task 06：实现后台可结算头寸查询
 
-- 输入：`07_核心流程与状态机/04_结算确认流程.md`。
-- 输出：单条/批量共用方法。
-- 验收：并发和全成功/全失败测试通过。
+| 项 | 内容 |
+|---|---|
+| 目标 | 查询 `ELIGIBLE` 头寸分页。 |
+| 依赖 | Task 05 |
+| 必须 | pageSize 最大 100。 |
+| 禁止 | `/eligible/export`。 |
+| 验收 | 分页查询正确，导出接口不存在或不属于 P0。 |
 
-## Task 07：实现账务入账编排和 UNKNOWN 补偿
+## Task 07：实现统一结算确认
 
-- 输入：`09_接口契约与事件协议/06_账务平台Port契约.md`。
-- 输出：PostingOrder、AccountingPort、查询补偿。
-- 验收：账务异常补偿测试通过。
+| 项 | 内容 |
+|---|---|
+| 目标 | 实现 `confirmMerchantSettlement(command)`。 |
+| 依赖 | Task 06、Task 03 |
+| 规则 | `positionNos` 1-500；全成功/全失败；同一商户/场景/主体校验；操作日志 afterCommit。 |
+| 验收 | 单条、500 条、501 条、混入不可结算项测试通过。 |
 
-## Task 08：实现标准查询和运营诊断
+## Task 08：实现账务入账 Port 和状态联动
 
-- 输入：`12_可观测性与开发诊断`。
-- 输出：查询接口、失败原因、操作日志。
-- 验收：查询不修改状态。
+| 项 | 内容 |
+|---|---|
+| 目标 | 对接账户账务平台标准端口。 |
+| 依赖 | Task 07 |
+| 必须 | 成功回写 requestNo/flowNo；失败进入 ACCOUNTING_FAILED；未知进入 UNKNOWN。 |
+| 禁止 | UNKNOWN 直接重入账。 |
+| 验收 | 成功/失败/UNKNOWN 三类用例通过。 |
 
-## Task 09：补测试和准出检查
+## Task 09：实现 UNKNOWN 补偿任务
 
-- 输入：`13_测试验收`。
-- 输出：单元、集成、契约测试。
-- 验收：任务卡准出通过。
+| 项 | 内容 |
+|---|---|
+| 目标 | 实现 `AccountingUnknownCompensationJob`。 |
+| 依赖 | Task 08 |
+| 规则 | 每 2 分钟查一次；5 次自动查询；10 分钟 overdue；30 分钟人工介入。 |
+| 验收 | UNKNOWN 回正成功、回正失败、人工介入测试通过。 |
 
-## V009 新增开发任务
+## Task 10：补齐测试与准出
 
-### Task 11：实现清分结算策略绑定能力
-
-- 依据：`06_策略与清分设计/08_策略绑定模型.md`
-- 新增表：`ccs_settlement_policy_binding`
-- 新增服务：`PolicyBindingApplicationService`、`PolicyMatchDomainService`
-- 验收：GLOBAL/BUSINESS_SCENE/MERCHANT 三类绑定可创建，策略匹配优先级正确。
-
-### Task 12：补策略版本结算模式与金额阈值字段
-
-- 依据：`06_策略与清分设计/06_结算模式与发起方式.md`、`06_策略与清分设计/07_最小最大金额与留存金额策略.md`
-- 修改：Entity、Mapper、DTO、OpenAPI 与 DDL 保持一致。
-- 验收：P0 默认 INTERNAL_ACCOUNT、OPERATOR_MANUAL、无留存、无阈值限制。
+| 项 | 内容 |
+|---|---|
+| 目标 | 补齐状态机、幂等、事务、账务补偿、批量边界测试。 |
+| 依赖 | Task 01-09 |
+| 验收 | `13_测试验收` 中 P0 用例全部通过。 |

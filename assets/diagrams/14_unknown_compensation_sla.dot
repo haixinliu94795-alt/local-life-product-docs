@@ -1,0 +1,20 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", fontname="Noto Sans CJK SC"];
+  node [shape=box, style="rounded", fontname="Noto Sans CJK SC", fontsize=12];
+  edge [fontname="Noto Sans CJK SC", fontsize=11];
+  A [label="PostingOrder UNKNOWN"];
+  B [label="每2分钟查询账务"];
+  C [label="查询成功"];
+  D [label="查询失败"];
+  E [label="无确定结果"];
+  F [label="SUCCESS\nBill/Position ACCOUNTED"];
+  G [label="FAILED\nBill/Position ACCOUNTING_FAILED"];
+  H [label="query_attempt_count+1\nnext_query_time"];
+  I [label="超过5次或30分钟\n人工介入"];
+  A -> B;
+  B -> C -> F;
+  B -> D -> G;
+  B -> E -> H;
+  H -> B [label="未超限"];
+  H -> I [label="超SLA"];
+}

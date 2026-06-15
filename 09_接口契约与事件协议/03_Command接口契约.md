@@ -2,55 +2,60 @@
 
 ## 1. 本章结论
 
-Command 接口用于产生状态变更，必须携带幂等键和请求指纹。V009 在策略命令中补充结算模式、发起方式、最小/最大金额和留存策略，在策略绑定命令中补充业务对象绑定。
+Command 接口是改变清结算状态的写接口，必须具备幂等键、request_hash、明确错误码和重复请求行为。V010 重点收口结算确认接口的批量上限和 request_hash 字段集合。
 
-## 2. 创建策略版本 Command
+## 2. `confirmMerchantSettlement`
 
-`PolicyCommand` 关键字段：
+### 2.1 语义
 
-| 字段 | 说明 | P0 默认 |
-|---|---|---|
-| `settlementMode` | 结算模式 | `INTERNAL_ACCOUNT` |
-| `initiationMode` | 发起方式 | `OPERATOR_MANUAL` |
-| `autoSettlementEnabled` | 是否自动结算 | `false` |
-| `minSettlementAmountCent` | 最小结算金额 | `0` |
-| `maxSettlementAmountCent` | 最大结算金额 | `0` |
-| `reservePolicyType` | 留存策略 | `NONE` |
-| `reserveAmountCent` | 固定留存金额 | `0` |
-| `reserveRatioBp` | 留存比例 | `0` |
+统一处理单条和批量结算。单条结算是 `positionNos.size() = 1`，批量结算是 `positionNos.size() > 1`。
 
-P0 校验：
+### 2.2 请求字段
 
-```text
-settlementMode 必须为 INTERNAL_ACCOUNT
-initiationMode 必须为 OPERATOR_MANUAL
-autoSettlementEnabled 必须为 false
-reservePolicyType 必须为 NONE 或 reserveAmountCent/reserveRatioBp 为 0
-```
+| 字段 | 必填 | 说明 |
+|---|---:|---|
+| `callerSystem` | 是 | 调用方系统。 |
+| `bizDomain` | 是 | 业务域。 |
+| `bizNo` | 是 | 业务编号。 |
+| `merchantNo` | 是 | 商户编号。 |
+| `businessScene` | 是 | 业务场景。 |
+| `positionNos` | 是 | 结算头寸编号列表，1-500 条。 |
+| `operatorNo` | 是 | 操作人编号。 |
+| `idempotentKey` | 是 | 幂等键。 |
+| `requestHash` | 是 | 请求核心参数指纹。 |
 
-## 3. 策略绑定 Command
+### 2.3 处理规则
 
-`PolicyBindingCommand` 用于将策略绑定到业务对象。
-
-| 字段 | 说明 |
+| 场景 | 结果 |
 |---|---|
-| `bindingSubjectType` | GLOBAL/BUSINESS_SCENE/CATEGORY/MERCHANT/CHANNEL/CAMPAIGN |
-| `bindingSubjectNo` | 对象编号 |
-| `businessScene` | 业务场景 |
-| `policyNo` | 策略编号 |
-| `bindingPriority` | 匹配优先级 |
-| `effectiveStartTime` / `effectiveEndTime` | 生效区间 |
-| `idempotentKey` / `requestHash` | 幂等与冲突治理 |
+| `positionNos` 为空 | `CCS_PARAM_INVALID` |
+| `positionNos` 超过 500 | `CCS_BATCH_LIMIT_EXCEEDED` |
+| 包含非 `ELIGIBLE` 头寸 | 整批失败 |
+| 包含不同商户头寸 | 整批失败 |
+| 同一幂等键同一 hash 重试 | 返回原结算单 |
+| 同一幂等键不同 hash | `CCS_IDEMPOTENT_CONFLICT` |
 
-## 4. 统一结算确认 Command
+### 2.4 成功响应
 
-单条和批量结算仍使用同一个接口：
-
-```text
-ConfirmSettlementCommand.positionNos
+```json
+{
+  "code": "SUCCESS",
+  "message": "success",
+  "data": {
+    "billNo": "SB202606150001",
+    "batchNo": "BT202606150001",
+    "billStatus": "CREATED"
+  }
+}
 ```
 
-- 单条：`positionNos.size == 1`
-- 批量：`positionNos.size > 1`
+## 3. 非 P0 Command
 
-P0 批量策略：全成功 / 全失败。
+以下写接口不进入 P0：
+
+```text
+/eligible/export
+/refund/*
+/freeze/*
+/payout/*
+```

@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: Clearing Settlement Platform P0 API
-  version: V009
-  description: P0 APIs for local-life positive clearing and settlement.
+  version: V010
+  description: P0 APIs for local-life positive clearing and settlement. V010 adds maturity job boundary, batch limit, UNKNOWN compensation SLA, operation-log transaction boundary, and request_hash standardization.
 servers:
   - url: /api
 components:
@@ -51,7 +51,7 @@ components:
         scopeKey: { type: string, example: '*' }
         businessScene: { type: string }
         priority: { type: integer, default: 100 }
-        settlementMode: { type: string, enum: [INTERNAL_ACCOUNT, DIRECT_BANK, EXTERNAL_PAYOUT], default: INTERNAL_ACCOUNT, description: P0 only INTERNAL_ACCOUNT. }
+        settlementMode: { type: string, enum: [INTERNAL_ACCOUNT], default: INTERNAL_ACCOUNT, description: P0 supports INTERNAL_ACCOUNT only. }
         initiationMode: { type: string, enum: [OPERATOR_MANUAL, AUTO, MERCHANT_SELF_SERVICE], default: OPERATOR_MANUAL, description: P0 only OPERATOR_MANUAL. }
         autoSettlementEnabled: { type: boolean, default: false }
         minSettlementAmountCent: { type: integer, format: int64, default: 0 }
@@ -112,6 +112,8 @@ components:
         positionNos:
           type: array
           minItems: 1
+          maxItems: 500
+          description: P0 supports at most 500 settlement positions per confirmation request.
           items: { type: string }
         operatorNo: { type: string }
         remark: { type: string, nullable: true }

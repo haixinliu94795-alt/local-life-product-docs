@@ -1,11 +1,14 @@
 {
-  "package": "本地生活_清结算平台_V009_SDD正式开发方案_行业案例吸收与策略增强_20260615",
-  "generated_at": "2026-06-15T09:32:52.496672",
+  "project": "本地生活清结算平台",
+  "version": "V010",
+  "edition": "SDD正式开发方案_P0正确性闭环",
+  "generated_at": "2026-06-15",
+  "file_count": 151,
   "files": [
     {
       "path": "00_技术方案标准/00_标准说明.md",
       "size": 544,
-      "sha256": "76ab4aa69f5295fe58294d82371611bf713a36b7ff426431c3a242345e08ffc3"
+      "sha256": "74ac5851e30ed2c1e7695349693e987824b807a5d8b1bf52f62bddace45df119"
     },
     {
       "path": "00_技术方案标准/01_高质量技术方案写作标准.md",
@@ -44,23 +47,23 @@
     },
     {
       "path": "01_总览入口/00_方案总览.md",
-      "size": 3255,
-      "sha256": "86fc29b20deef2dcecbcdfd97cbd14a074704e400e90d638e1dae8a20cca4f3a"
+      "size": 2492,
+      "sha256": "d34004dd28ac9435a93129cffd0e89b00eca70a8f483742febc3defc63e13404"
     },
     {
       "path": "01_总览入口/01_阅读路径.md",
       "size": 964,
-      "sha256": "2eb34bf9d8e0bac4d58190c91186e37a67792f3d6b70e8cca758628a43bdcac4"
+      "sha256": "f1a8b2117efa8616dae8378c42d9644574c78819aa7bf2efe97bb425e95a9471"
     },
     {
       "path": "01_总览入口/02_本版变更说明.md",
-      "size": 1915,
-      "sha256": "25d1a0bf64971c31fa3f40bf59f8375dcbd6de6aae729593db3e9ba17acf0a65"
+      "size": 1717,
+      "sha256": "40a27ae92a2505c9d5d7a0051978900cafad802ba5ce54c2172492ae230a53eb"
     },
     {
       "path": "01_总览入口/03_开发准入结论.md",
-      "size": 639,
-      "sha256": "b3bdb1f03e59e28af73330acfd128f41c3d8b17ec609dca998f9e5d9d61f1efa"
+      "size": 1128,
+      "sha256": "798408c4a7085b9b392ca1a7af338cc20467c44384bdafb78a03ac7a2e84c66d"
     },
     {
       "path": "02_行业模型与设计原则/01_电商本地生活清结算参考模型.md",
@@ -85,7 +88,7 @@
     {
       "path": "02_行业模型与设计原则/05_行业案例吸收与裁剪.md",
       "size": 3321,
-      "sha256": "9b9edf6a5283c7dbba98fbb3254782ce58dd4026f9e08196ce66576920a68990"
+      "sha256": "33eb44aa2da578e097d2c11b48ac94f38a3e1d85989fc0e0a055dcda71fa80ce"
     },
     {
       "path": "03_业务能力与系统边界/01_清结算能力地图.md",
@@ -150,7 +153,7 @@
     {
       "path": "05_DDD领域设计/03_聚合根与实体值对象.md",
       "size": 1679,
-      "sha256": "cd7b909db3cc0b1b5f62ad03a406b81e38bfa3353997b2daddc03cdd3f7162f7"
+      "sha256": "765d662894e1ad70de280fdb77215462cfdecf247d0e2aa7c87e00f5f07c76e9"
     },
     {
       "path": "05_DDD领域设计/04_领域服务与不变量.md",
@@ -195,12 +198,12 @@
     {
       "path": "06_策略与清分设计/07_最小最大金额与留存金额策略.md",
       "size": 1890,
-      "sha256": "4ba73b8ef52136b343d9f91709b82240985d3f5adf38db60251c1d424db7c7b9"
+      "sha256": "1f0963861f479c1e15951cebac09437997c49b6b46373aab8d5c47a8a78b3503"
     },
     {
       "path": "06_策略与清分设计/08_策略绑定模型.md",
       "size": 1698,
-      "sha256": "9825245ee897c6e69f6e386dd48e72e2acdd1f2553fbab16021477158959116e"
+      "sha256": "27d4892b24b4c8d4d0cc931d5b5fdc9b21cfe6f80dbfe34db772c3727048db4e"
     },
     {
       "path": "07_核心流程与状态机/01_来源事件接入流程.md",
@@ -214,8 +217,8 @@
     },
     {
       "path": "07_核心流程与状态机/03_清算与头寸成熟流程.md",
-      "size": 1032,
-      "sha256": "8dda8f356d09c5af835b79228546e533849a421902eafc94e029defcefcff611"
+      "size": 3349,
+      "sha256": "6dba8bb81c49cc2fdfe96e81be49aaf9794050556ac0e280e8c46272e960ce06"
     },
     {
       "path": "07_核心流程与状态机/04_结算确认流程.md",
@@ -239,8 +242,8 @@
     },
     {
       "path": "07_核心流程与状态机/08_SettlementPosition状态机.md",
-      "size": 1133,
-      "sha256": "1291935c0650f357423d7317ef4a70a50d258e3d0d2eb07fd4bc0a3cb43747fb"
+      "size": 3640,
+      "sha256": "76faa488b6fb62de9fe8aaca23c255c2c49653978c05507f1162ee3485fc9972"
     },
     {
       "path": "07_核心流程与状态机/09_SettlementBill状态机.md",
@@ -249,8 +252,8 @@
     },
     {
       "path": "07_核心流程与状态机/10_AccountingPostingOrder状态机.md",
-      "size": 898,
-      "sha256": "5185a17ee858d208a1f7e71fea08925bc7cd7f9c40d56fe5dbbff76acb58e21e"
+      "size": 3257,
+      "sha256": "c6fe377d3b3f1683765c2b139cb7b7b671c91bad5379a09103e2391f2320f160"
     },
     {
       "path": "07_核心流程与状态机/11_状态联动矩阵.md",
@@ -260,7 +263,7 @@
     {
       "path": "08_数据模型与存储设计/01_逻辑数据模型.md",
       "size": 1595,
-      "sha256": "c96c21f7d83e067a5f50e3d72b0ad81bea5be1bccb83926277c8784b539c6f6b"
+      "sha256": "5bf7822ada932af3d452314f35c1c00086c00a9b2424241d2b9974ac9500f250"
     },
     {
       "path": "08_数据模型与存储设计/02_核心表关系图.md",
@@ -268,24 +271,24 @@
       "sha256": "a8a58c7765fbeeef520314c5b31a8255a76546882a3f1e3d3b41f2b7d7d7ef29"
     },
     {
-      "path": "08_数据模型与存储设计/03_DDL_V009_P0.sql",
-      "size": 32518,
-      "sha256": "129bddde1cf3d84d3d9e4c9b9b2142097a2fc0c8f50e2627dc7292a960562a49"
+      "path": "08_数据模型与存储设计/03_DDL_V010_P0.sql",
+      "size": 33198,
+      "sha256": "d1d10533c0a72c24e9510f1541a09e9bde4d9541604b8e0f9cc2ab0743568199"
     },
     {
       "path": "08_数据模型与存储设计/04_字段设计说明.md",
-      "size": 2891,
-      "sha256": "99c9d97ddc96713b7f16c884a5d8393d8ca496f33cc6c5fe8453a9802c1d956e"
+      "size": 2710,
+      "sha256": "af79164518d9570ffac1347fb7a4c9e6ebec0e44f029a4c006e2df8777869e57"
     },
     {
       "path": "08_数据模型与存储设计/05_索引设计与查询场景.md",
-      "size": 1896,
-      "sha256": "222a20e8dc04918b0c4d755f2a899ffac580d3a36e9f785dfcd3abaa0fe2e44f"
+      "size": 1914,
+      "sha256": "92e177c419e4dc7a0316813d7b0cee7f25b7936d0a2cf2a0b31499c9d07cfb15"
     },
     {
-      "path": "08_数据模型与存储设计/06_数据生命周期与开发期容量预案.md",
-      "size": 557,
-      "sha256": "eb18eab3322efd90f52aeb6abb36c3a3a76c1608a0bf122341396bdc378b9c86"
+      "path": "08_数据模型与存储设计/06_数据保留与非P0容量规划说明.md",
+      "size": 973,
+      "sha256": "8c17033f483164f7a7d4192e6631225d99867768138eb161579069e7b7079923"
     },
     {
       "path": "08_数据模型与存储设计/07_DDL_Entity_Mapper一致性检查.md",
@@ -299,13 +302,13 @@
     },
     {
       "path": "09_接口契约与事件协议/02_统一响应与错误结构.md",
-      "size": 667,
-      "sha256": "f913841ee3febddc373777d91d198218e44825b31863e49cd0af41e826f64198"
+      "size": 1230,
+      "sha256": "19a907fa0c83ec2eff981e9f909d61f0c88712340d94200c0eb759f68375faca"
     },
     {
       "path": "09_接口契约与事件协议/03_Command接口契约.md",
-      "size": 1756,
-      "sha256": "26cd4088a9ab5e5f9d60a1ff723d23cd56fb6df51114075c5de7d433968c6ad4"
+      "size": 1583,
+      "sha256": "4a232b5863629c2d5e5936b4d82d59a75aefaac2580805b268901ff821036302"
     },
     {
       "path": "09_接口契约与事件协议/04_Query接口契约.md",
@@ -324,18 +327,18 @@
     },
     {
       "path": "09_接口契约与事件协议/openapi.yaml",
-      "size": 9865,
-      "sha256": "bcacf9034ad37d5242b202b82764258eb2799da5525ee55a84aeb22fe9f593b5"
+      "size": 10104,
+      "sha256": "c6282f1af496fb9c889ce162125fc02c3140e9c09388ee7c654c872f2faee9d4"
     },
     {
       "path": "10_一致性_幂等_异常_补偿/01_事务边界.md",
-      "size": 597,
-      "sha256": "b2a9da25339f90ddd2fc55464b1cd241bb84f2eee747c2573f1319cb64958364"
+      "size": 3287,
+      "sha256": "a772f567aa6ff64b3290282ec0b7a32ace072568d81ac63f5cd3988cd412eb25"
     },
     {
       "path": "10_一致性_幂等_异常_补偿/02_幂等与request_hash.md",
-      "size": 1056,
-      "sha256": "d88269597d6b1229de6aec2bfbe43ea114934cb703e870e6606f00990e2e4fb4"
+      "size": 2917,
+      "sha256": "2b42973d74e046bdceacccf32bfb0a21be06a692fbcd279d97b20195b78cd621"
     },
     {
       "path": "10_一致性_幂等_异常_补偿/03_重复事件与乱序处理.md",
@@ -344,8 +347,8 @@
     },
     {
       "path": "10_一致性_幂等_异常_补偿/04_账务UNKNOWN补偿.md",
-      "size": 671,
-      "sha256": "9f5daa7dd1878299f5faf029c390db7255bd0b1c51ed06f108127890cf28118f"
+      "size": 3266,
+      "sha256": "bdf72c69b539872f3eefc9213e66d21572adce16f15f21d428bc59201bbda110"
     },
     {
       "path": "10_一致性_幂等_异常_补偿/05_金额校验与防错结.md",
@@ -358,34 +361,34 @@
       "sha256": "691bd09bbb8d9037fc42dfb61d3bad9a95830831a6c8f4aacaed33d87316879f"
     },
     {
-      "path": "11_可扩展性与大规模处理/01_多业务线接入扩展.md",
+      "path": "11_P0边界与后续扩展/01_多业务线接入扩展.md",
       "size": 392,
       "sha256": "7101c522798545c678293fbb89858e69f4b047b84f3c2ce0aea00598f529046f"
     },
     {
-      "path": "11_可扩展性与大规模处理/02_多参与方清分扩展.md",
+      "path": "11_P0边界与后续扩展/02_多参与方清分扩展.md",
       "size": 442,
       "sha256": "c2a73754b652ef32b6d21b4f1339f8853e3644b61f0d31a6a2a7620e3edc340a"
     },
     {
-      "path": "11_可扩展性与大规模处理/03_策略扩展.md",
+      "path": "11_P0边界与后续扩展/03_策略扩展.md",
       "size": 393,
       "sha256": "404192f6b4a42d119e4b77b05684063338cbe86a5908ac4548643d52b9d45ea2"
     },
     {
-      "path": "11_可扩展性与大规模处理/04_批量处理与任务调度.md",
-      "size": 577,
-      "sha256": "559d97ccacf0d4094248676258bdd5273c11d9ccbcca9afbe5e20d10b9173739"
+      "path": "11_P0边界与后续扩展/04_批量处理与任务调度.md",
+      "size": 1838,
+      "sha256": "84b28ae63f5263888873a20c225da6ba1121bde191d1bd136bb31a9fa6f3bc1d"
     },
     {
-      "path": "11_可扩展性与大规模处理/05_读写分离与查询投影.md",
+      "path": "11_P0边界与后续扩展/05_读写分离与查询投影.md",
       "size": 367,
       "sha256": "77e450706d66d86a641e4147d3b6be3cd39c50fac03ce00da63cfbb3d57b164c"
     },
     {
-      "path": "11_可扩展性与大规模处理/06_容量与性能预案.md",
-      "size": 290,
-      "sha256": "2207b0f139292b61a4b755c0ab267ca938f4fdde4bda4d8c7818eba24299e840"
+      "path": "11_P0边界与后续扩展/06_非P0容量与性能事项说明.md",
+      "size": 1176,
+      "sha256": "81e25f59a78e45edf1c67ae94bdd176f7029f930d51023af25f310545c8e3a6e"
     },
     {
       "path": "12_可观测性与开发诊断/01_指标体系.md",
@@ -404,8 +407,8 @@
     },
     {
       "path": "12_可观测性与开发诊断/04_审计与操作日志.md",
-      "size": 222,
-      "sha256": "e1518dc7415b04072b3e9cce6918b3fad6ef7f11571728a9bbc28ddf2746623c"
+      "size": 1853,
+      "sha256": "fbfbeb94a56e1f5e40a0f5018392f3881ef3bc4d9c9db13b204cae023a2ea328"
     },
     {
       "path": "13_测试验收/01_架构验收清单.md",
@@ -438,14 +441,14 @@
       "sha256": "138c50872104a09df4994870f10312a062f41ad31061014f5ce2feea509dd45a"
     },
     {
-      "path": "13_测试验收/07_性能与批量测试.md",
-      "size": 352,
-      "sha256": "ae5103d237f81d536117b5b3b0dfc67a94f75165efbf46e8e26aa66004b52ac3"
+      "path": "13_测试验收/07_批量边界与P0约束测试.md",
+      "size": 1188,
+      "sha256": "47f79923aa25f6a274f48608254e055ee4051b9733bc26df96efe4f96ea4b527"
     },
     {
       "path": "13_测试验收/08_策略能力测试矩阵.md",
       "size": 1476,
-      "sha256": "c7d62f9d6a9fd2b07194c9e0c889eeaed3ab653b0dbd1b1fec1cc30fa8cc81af"
+      "sha256": "69d335521cb841a79fa268b43f09de755ea6e3d24af79bb77ac0f15adc93d304"
     },
     {
       "path": "14_代码落地任务包/01_工程结构与包设计.md",
@@ -455,12 +458,12 @@
     {
       "path": "14_代码落地任务包/02_类职责清单.md",
       "size": 1009,
-      "sha256": "3e8544522c4616a61859f5e07cbf4e14b7f33a5fb552a321fd060231771064b7"
+      "sha256": "849a90c3bde6960bc96240b462cb1a1b084b7478e3bdc324e42d5c4964bee6a5"
     },
     {
       "path": "14_代码落地任务包/03_Codex开发任务卡.md",
-      "size": 2648,
-      "sha256": "252f422c603256c22fd3060408b40fca3d7b97470897d77a980065fc1a4e68d0"
+      "size": 3694,
+      "sha256": "8d3e1c7aef12ab886bc84922f9dbb7dc668a07848ab6ab9cddaaa95700ffa03a"
     },
     {
       "path": "14_代码落地任务包/04_任务依赖图.md",
@@ -469,8 +472,8 @@
     },
     {
       "path": "14_代码落地任务包/05_开发准出清单.md",
-      "size": 491,
-      "sha256": "a1b07c7e1b8aca2bf6e0b1f35b0c57d8865a16ff8faba7c838fcc182791e6b49"
+      "size": 924,
+      "sha256": "d98088426850dee627675c4b55611218a63c7d410155836fa6147de62f093262"
     },
     {
       "path": "15_架构决策记录_ADR/ADR-001_采用标准清结算主模型.md",
@@ -515,7 +518,7 @@
     {
       "path": "15_架构决策记录_ADR/ADR-009_吸收结算行业案例但不扩大P0边界.md",
       "size": 1409,
-      "sha256": "1ea3f38b126012677ec658c8d8f4704256a826c3b577c25ea79a8ba80031cd3b"
+      "sha256": "81dbc4e7beac4c87a7c37156c0b9936d06724c3a05fc02f7649b5f40213650a7"
     },
     {
       "path": "15_架构决策记录_ADR/ADR-010_采用策略绑定模型而非对象复制配置.md",
@@ -528,24 +531,24 @@
       "sha256": "6f91a2009d119597d8fa61a034b73fb109b50b17d5f3dc5834c23c79c287528c"
     },
     {
-      "path": "16_交付总览/00_清结算平台V009正式开发方案总览.docx",
-      "size": 486508,
-      "sha256": "1333ccb709fda9f2d9463315fb88ff9372ec7613eaf27ca9af41ef18fd9d3949"
+      "path": "16_交付总览/00_清结算平台V010正式开发方案总览.docx",
+      "size": 124738,
+      "sha256": "a935ff97cb14ce8789156bc0cb24c811a7547ebfce80ffea155ddc33710c7ee1"
     },
     {
-      "path": "16_交付总览/00_清结算平台V009正式开发方案总览.md",
-      "size": 1370,
-      "sha256": "df1f6615e17ef4722141601111eac11f8945c3cc2c26a9b5365445f3b67775e5"
+      "path": "16_交付总览/00_清结算平台V010正式开发方案总览.md",
+      "size": 3253,
+      "sha256": "ab52126fc591595e5844e1a8eb3ce5867c2b533b1e10727298d717f2167889ff"
     },
     {
-      "path": "16_交付总览/00_清结算平台V009正式开发方案总览.pdf",
-      "size": 454755,
-      "sha256": "d13ae57594330b334d57f4bf889fe9e1a6365496fe08e28f8d2f8ae79621b0cd"
+      "path": "16_交付总览/00_清结算平台V010正式开发方案总览.pdf",
+      "size": 285795,
+      "sha256": "5e800acb644fdf21490860a6de9468b5f99e41569703c1289e3a9775e03b80b4"
     },
     {
       "path": "99_参考输入/README.md",
       "size": 781,
-      "sha256": "f380b96352b508cf097b87589238124cb8678e54dfdf648c3b0acf24cbc9d25e"
+      "sha256": "4a397cb33e5fed208ee5b33546136209c846a7fc3c4cc06e1c473b8b7fada27d"
     },
     {
       "path": "99_参考输入/docs_整体技术方案_正式版_V2.69_普通商品结算TRANSFER准入前提与余额不足闭环版(1).zip",
@@ -569,8 +572,8 @@
     },
     {
       "path": "README.md",
-      "size": 2007,
-      "sha256": "4b11dd658a1901c52138b49bbc36dbcc31507b34cbd50da5771b0e51bc58ee28"
+      "size": 2040,
+      "sha256": "18cc282d28a09cba40cc3bfc25d59018e9f590fb15c2ed762e26ee3e713f6d06"
     },
     {
       "path": "assets/diagrams/01_capability_map.png",
@@ -706,6 +709,56 @@
       "path": "assets/diagrams/12_settlement_mode_decision.svg",
       "size": 6525,
       "sha256": "18117b8cbbb5326abd12e0a2682e6a78b80fb39b08d7d55304a6ecb7540056be"
+    },
+    {
+      "path": "assets/diagrams/13_maturity_job_minimal.dot",
+      "size": 603,
+      "sha256": "f75bbf2b2bb39a63bf34919e646d417b574ab6b35041b6bc553fe09beb564678"
+    },
+    {
+      "path": "assets/diagrams/13_maturity_job_minimal.png",
+      "size": 40460,
+      "sha256": "47dbed287f64400924a8a1f1ca3a5105dba1f78a3762203719eb612f5bce49c9"
+    },
+    {
+      "path": "assets/diagrams/13_maturity_job_minimal.svg",
+      "size": 5814,
+      "sha256": "5d608b70ac3d425aac7546233f4569fbf6b631fe178d29d456dc0e9482d66c7b"
+    },
+    {
+      "path": "assets/diagrams/14_unknown_compensation_sla.dot",
+      "size": 693,
+      "sha256": "32420895d967af5cca9c17a038ce84045382e36e5fa2bd45071cd990651f35da"
+    },
+    {
+      "path": "assets/diagrams/14_unknown_compensation_sla.png",
+      "size": 52903,
+      "sha256": "b0d5b72141852d1193f45a1444b24d2edcc8a99ea1d4c22549dfb26bcdbd6b01"
+    },
+    {
+      "path": "assets/diagrams/14_unknown_compensation_sla.svg",
+      "size": 8490,
+      "sha256": "8705843049ead78fb194f3939960cce6b2a7b66ff83fbb35c9f26f1f6ccfb308"
+    },
+    {
+      "path": "assets/diagrams/15_operation_log_after_commit.dot",
+      "size": 555,
+      "sha256": "5c4a084de839f80492d1aeee926ba23ccc3322fb5ed2a5abee055ff5ba31530f"
+    },
+    {
+      "path": "assets/diagrams/15_operation_log_after_commit.png",
+      "size": 30694,
+      "sha256": "90ea73a357082781471a175d504da1c469105081653665a1833328201a7deba3"
+    },
+    {
+      "path": "assets/diagrams/15_operation_log_after_commit.svg",
+      "size": 5115,
+      "sha256": "81c0fcab18ec719372ab53cbf6e8d1c7aa837f53d7ed629226c71f9302517a5b"
+    },
+    {
+      "path": "package_manifest.json",
+      "size": 26624,
+      "sha256": "41d988c904e815693286c6445dae44553a58fc253d44aaeb1b4ab69629965866"
     }
   ]
 }

@@ -1,0 +1,16 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", fontname="Noto Sans CJK SC"];
+  node [shape=box, style="rounded", fontname="Noto Sans CJK SC", fontsize=12];
+  edge [fontname="Noto Sans CJK SC", fontsize=11];
+  A [label="定时触发\n每5分钟"];
+  B [label="扫描 IN_TRANSIT\neligible_time <= now\nlimit 200"];
+  C [label="逐条校验\n仍为 IN_TRANSIT"];
+  D [label="推进 ELIGIBLE\n记录成熟尝试"];
+  E [label="失败保持 IN_TRANSIT\n下轮重试"];
+  F [label="任务结束\n无容量规划"];
+  A -> B -> C;
+  C -> D [label="满足"];
+  C -> E [label="失败"];
+  D -> F;
+  E -> F;
+}

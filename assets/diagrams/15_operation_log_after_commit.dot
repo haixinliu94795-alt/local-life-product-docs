@@ -1,0 +1,13 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", fontname="Noto Sans CJK SC"];
+  node [shape=box, style="rounded", fontname="Noto Sans CJK SC", fontsize=12];
+  edge [fontname="Noto Sans CJK SC", fontsize=11];
+  A [label="结算确认主事务"];
+  B [label="锁定头寸\n生成批次/结算单/明细/入账单"];
+  C [label="主事务提交成功"];
+  D [label="afterCommit"];
+  E [label="REQUIRES_NEW/异步写操作日志"];
+  F [label="日志失败\n只记录错误指标\n不回滚主事务"];
+  A -> B -> C -> D -> E;
+  E -> F [label="失败"];
+}
