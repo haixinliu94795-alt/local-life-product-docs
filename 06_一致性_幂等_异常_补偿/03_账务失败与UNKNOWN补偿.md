@@ -2,28 +2,29 @@
 
 ## 1. 明确失败
 
-账务平台返回明确失败：
+账户账务平台返回明确失败时：
 
-- 入账单：`FAILED`
-- 结算单：`ACCOUNTING_FAILED`
-- 待结算项：`ACCOUNTING_FAILED`
-- 记录 `fail_code`、`fail_reason`
-- 后台允许人工重试
+```text
+AccountingPostingOrder -> FAILED
+SettlementBill -> ACCOUNTING_FAILED
+SettlementPosition -> ACCOUNTING_FAILED
+```
 
-## 2. 结果未知
+允许运营或任务重试。重试必须复用同一 `accounting_idempotent_key`。
 
-网络超时、连接中断、响应解析失败等结果未知：
+## 2. UNKNOWN
 
-- 入账单：`UNKNOWN`
-- 结算单：`UNKNOWN`
-- 待结算项保持 `ACCOUNTING_PROCESSING`
-- 不允许直接再次入账
-- 必须先查询账务平台幂等结果
+以下场景进入 UNKNOWN：
 
-## 3. UNKNOWN 回正
+- 调用账务平台超时；
+- 网络中断；
+- 账户账务平台返回处理中或结果不明；
+- 本地收到响应但回写状态失败。
 
-| 查询结果 | 处理 |
-|---|---|
-| 账务成功 | 回写 `accounting_request_no`、`fund_account_flow_no`，推进成功。 |
-| 账务失败 | 推进失败，允许重试。 |
-| 查不到 | 按失败处理或进入人工核查，具体由账务平台能力确认。 |
+UNKNOWN 处理规则：
+
+1. 不允许直接再次入账。
+2. 必须调用 `querySettlementPosting(accountingRequestNo)` 或等价查询接口。
+3. 查询成功则回正 `ACCOUNTED/SUCCESS`。
+4. 查询失败则回正 `ACCOUNTING_FAILED/FAILED`。
+5. 查询仍未知则保留 UNKNOWN 并告警。

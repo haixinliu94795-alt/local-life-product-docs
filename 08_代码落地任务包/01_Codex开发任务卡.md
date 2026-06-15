@@ -1,78 +1,61 @@
 # Codex 开发任务卡
 
-## Task 01：新增清结算模块骨架
+## 总要求
 
-| 项 | 内容 |
-|---|---|
-| 方案依据 | V004 全部文档 |
-| 主关联对象 | `SettlementBill` / `bill_no` |
-| 修改区域 | 新增 `org.jeecg.modules.ccs` 包或新模块 |
-| 禁止项 | 不修改旧结算业务逻辑 |
-| 输出 | 包结构、空类骨架、枚举、基础 DTO |
+1. 严格依据 V005 SDD，不参考旧系统表来反向设计清结算平台。
+2. 不允许在核心模型中出现旧 `finance_detail` 字段映射。
+3. 不允许实现退款、提现、冻结、止付、BFF 展示口径。
+4. 不允许绑定 `AccountingFacade.recordProductSettlement` 方法名；必须通过 `SettlementAccountingPort` 端口隔离。
+5. 所有状态变更必须经过状态机服务，不允许直接 update 状态字段。
+6. 所有写接口必须校验 `idempotent_key + request_hash`。
+7. 所有金额使用 Long 分。
 
-## Task 02：落地 DDL、Entity、Mapper、Repository
+## Task 01：模块骨架
 
-| 项 | 内容 |
-|---|---|
-| 方案依据 | `05_数据模型/02_DDL_V004_P0.sql` |
-| 修改区域 | db 脚本、Entity、Mapper、Repository |
-| 禁止项 | 不得新增 currency/tenant_id；金额必须 Long/Bigint 分 |
-| 测试 | DDL-Entity-Mapper 一致性检查 |
+- 新增清结算模块和 DDD 分层包。
+- 输出 Entity、Repository、Application Service、Domain Service、Adapter 包结构。
 
-## Task 03：实现来源事件接入
+## Task 02：DDL / Entity / Mapper
 
-| 项 | 内容 |
-|---|---|
-| 输入 | `SourceEventAcceptCommand` |
-| 输出 | `ccs_source_event` |
-| 必须 | 幂等键、requestHash、重复请求处理 |
+- 执行 `05_数据模型/02_DDL_V005_P0.sql`。
+- 按 `05_数据模型/04_DDL_Entity_Mapper一致性检查清单.md` 创建 Entity 和 Mapper。
 
-## Task 04：普通商品清分映射
+## Task 03：来源事件接入
 
-| 项 | 内容 |
-|---|---|
-| 输入 | `WRITE_OFF_COMPLETED` + `local_order_finance_detail` |
-| 输出 | `ccs_clearing_result`、`ccs_clearing_result_item` |
-| 必须 | 金额字段单位分、公式映射、金额校验 |
+- 实现 `SettlementSourceEventCommand`。
+- 支持幂等和 request_hash 冲突校验。
+- 生成清分结果和结算头寸。
 
-## Task 05：待结算项生命周期
+## Task 04：账期成熟与商家应付
 
-| 项 | 内容 |
-|---|---|
-| 输出 | `ccs_pending_settlement_item` |
-| 必须 | `IN_TRANSIT -> ELIGIBLE`、退款前置规则、状态矩阵测试 |
+- 实现 `IN_TRANSIT -> ELIGIBLE` 推进。
+- 实现后台查询 `ELIGIBLE` 结算头寸。
 
-## Task 06：商家应付和统一确认结算
+## Task 05：统一结算确认
 
-| 项 | 内容 |
-|---|---|
-| 接口 | `/admin/ccs/merchant-payable/page`、`/admin/ccs/merchant-payable/settle` |
-| 必须 | 单条/批量同方法，全成功/全失败，批量校验 |
+- 实现 `confirmMerchantSettlement(command)`。
+- 单条和批量共用同一核心方法。
+- 批量策略全成功/全失败。
 
-## Task 07：账务入账编排
+## Task 06：账务入账编排
 
-| 项 | 内容 |
-|---|---|
-| 接口 | `AccountingFacade.recordProductSettlement` |
-| 必须 | SUCCESS/FAILED/UNKNOWN、重试、查询补偿、回写流水号 |
+- 实现 `SettlementAccountingPort`。
+- 实现账务入账状态机。
+- 支持成功、失败、UNKNOWN。
 
-## Task 08：商户端 BFF 新老双轨
+## Task 07：补偿查询
 
-| 项 | 内容 |
-|---|---|
-| 输出 | 资金汇总、待结算明细、结算详情 |
-| 必须 | 新老数据合并，后台和商户端口径分离 |
+- 实现 UNKNOWN 查询补偿。
+- UNKNOWN 不允许直接重复入账。
 
-## Task 09：退款最小闭环
+## Task 08：标准查询接口
 
-| 项 | 内容 |
-|---|---|
-| 场景 | 结算前、结算中、结算后 |
-| 必须 | 负向清分和负向待结算项 |
+- 实现结算头寸、结算单、账务入账单标准查询。
+- 不实现页面展示聚合。
 
-## Task 10：测试、准出和灰度
+## Task 09：测试
 
-| 项 | 内容 |
-|---|---|
-| 必须 | 状态矩阵、幂等并发、账务异常、退款、双轨回归 |
-| 输出 | 测试报告、准出清单、灰度开关说明 |
+- 状态机测试。
+- 幂等并发测试。
+- 账务异常补偿测试。
+- 金额一致性测试。
