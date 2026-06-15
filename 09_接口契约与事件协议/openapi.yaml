@@ -1,0 +1,213 @@
+openapi: 3.0.3
+info:
+  title: Clearing Settlement Platform P0 API
+  version: V008
+  description: P0 APIs for local-life positive clearing and settlement.
+servers:
+  - url: /api
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      required: [code, message, traceId]
+      properties:
+        code: { type: string, example: SUCCESS }
+        message: { type: string, example: success }
+        traceId: { type: string }
+        data: { nullable: true }
+    PageResponse:
+      type: object
+      properties:
+        records:
+          type: array
+          items: { type: object }
+        pageNo: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer, format: int64 }
+    SourceEventCommand:
+      type: object
+      required: [callerSystem, bizDomain, bizNo, eventType, sourceOrderNo, sourceFulfillmentNo, merchantNo, businessScene, occurredTime, orderAmountCent, paidAmountCent, idempotentKey, requestHash, payload]
+      properties:
+        callerSystem: { type: string, maxLength: 64 }
+        bizDomain: { type: string, maxLength: 64 }
+        bizNo: { type: string, maxLength: 128 }
+        eventType: { type: string, enum: [WRITE_OFF_COMPLETED, FULFILLMENT_COMPLETED] }
+        sourceOrderNo: { type: string, maxLength: 128 }
+        sourceFulfillmentNo: { type: string, maxLength: 128 }
+        merchantNo: { type: string, maxLength: 64 }
+        businessScene: { type: string, maxLength: 64, example: LOCAL_LIFE_NORMAL }
+        occurredTime: { type: string, format: date-time }
+        orderAmountCent: { type: integer, format: int64, description: Amount in cents. }
+        paidAmountCent: { type: integer, format: int64, description: Amount in cents. }
+        idempotentKey: { type: string, maxLength: 128 }
+        requestHash: { type: string, maxLength: 128 }
+        payload: { type: object }
+    PolicyCommand:
+      type: object
+      required: [policyName, policyScope, businessScene, effectiveStartTime, rules, idempotentKey, requestHash]
+      properties:
+        policyName: { type: string }
+        policyScope: { type: string, enum: [GLOBAL, BUSINESS_SCENE, CATEGORY, MERCHANT, CAMPAIGN] }
+        scopeKey: { type: string, example: '*' }
+        businessScene: { type: string }
+        priority: { type: integer, default: 100 }
+        effectiveStartTime: { type: string, format: date-time }
+        effectiveEndTime: { type: string, format: date-time, nullable: true }
+        idempotentKey: { type: string }
+        requestHash: { type: string }
+        rules:
+          type: array
+          items:
+            type: object
+            required: [ruleType, amountCode]
+            properties:
+              ruleType: { type: string, enum: [SETTLEMENT_CYCLE, REVENUE_ALLOCATION, DISCOUNT_COST_BEARING, COMMISSION_ALLOCATION] }
+              amountCode: { type: string }
+              cycleBasis: { type: string, enum: [WRITE_OFF_TIME, FULFILLMENT_TIME, PAY_TIME], nullable: true }
+              cycleDays: { type: integer, nullable: true }
+              roundingMode: { type: string, enum: [HALF_UP, DOWN, UP], default: HALF_UP }
+              participants:
+                type: array
+                items:
+                  type: object
+                  required: [participantRole, allocationType]
+                  properties:
+                    participantRole: { type: string }
+                    participantType: { type: string }
+                    participantNo: { type: string, nullable: true }
+                    allocationType: { type: string, enum: [RATIO, FIXED] }
+                    ratioBp: { type: integer, description: Basis point, 10000 = 100%. }
+                    fixedAmountCent: { type: integer, format: int64 }
+    ConfirmSettlementCommand:
+      type: object
+      required: [callerSystem, bizDomain, bizNo, merchantNo, businessScene, positionNos, operatorNo, idempotentKey, requestHash]
+      properties:
+        callerSystem: { type: string }
+        bizDomain: { type: string }
+        bizNo: { type: string }
+        merchantNo: { type: string }
+        businessScene: { type: string }
+        positionNos:
+          type: array
+          minItems: 1
+          items: { type: string }
+        operatorNo: { type: string }
+        remark: { type: string, nullable: true }
+        idempotentKey: { type: string }
+        requestHash: { type: string }
+    AccountingPostingQuery:
+      type: object
+      required: [accountingIdempotentKey, callerSystem, bizDomain, bizNo, accountingScene]
+      properties:
+        accountingRequestNo: { type: string, nullable: true }
+        accountingIdempotentKey: { type: string }
+        callerSystem: { type: string }
+        bizDomain: { type: string }
+        bizNo: { type: string }
+        accountingScene: { type: string }
+paths:
+  /ccs/source-events:
+    post:
+      summary: Accept source business event.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SourceEventCommand' }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiResponse' }
+  /admin/ccs/policies:
+    post:
+      summary: Create clearing and settlement policy draft.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PolicyCommand' }
+      responses:
+        '200': { description: OK }
+  /admin/ccs/policies/{policyNo}/versions:
+    post:
+      summary: Create clearing and settlement policy version draft.
+      parameters:
+        - in: path
+          name: policyNo
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PolicyCommand' }
+      responses:
+        '200': { description: OK }
+  /admin/ccs/policies/{policyNo}/versions/{policyVersionNo}/publish:
+    post:
+      summary: Publish a policy version.
+      parameters:
+        - in: path
+          name: policyNo
+          required: true
+          schema: { type: string }
+        - in: path
+          name: policyVersionNo
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+  /admin/ccs/policies/active:
+    get:
+      summary: Query active policy.
+      parameters:
+        - in: query
+          name: businessScene
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+  /admin/ccs/positions/eligible:
+    get:
+      summary: Query eligible settlement positions.
+      parameters:
+        - in: query
+          name: merchantNo
+          required: false
+          schema: { type: string }
+        - in: query
+          name: businessScene
+          required: true
+          schema: { type: string }
+        - in: query
+          name: pageNo
+          required: false
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: pageSize
+          required: false
+          schema: { type: integer, default: 20 }
+      responses:
+        '200': { description: OK }
+  /admin/ccs/settlements/confirm:
+    post:
+      summary: Confirm single or batch merchant settlement.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ConfirmSettlementCommand' }
+      responses:
+        '200': { description: OK }
+  /internal/ccs/accounting-postings/query:
+    post:
+      summary: Query accounting posting status by accounting request or idempotency key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AccountingPostingQuery' }
+      responses:
+        '200': { description: OK }

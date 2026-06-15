@@ -1,0 +1,611 @@
+{
+  "package": "本地生活_清结算平台_V008_SDD正式开发方案_高质量重构版_20260615",
+  "generated_at": "2026-06-15T02:56:19.632462",
+  "files": [
+    {
+      "path": "00_技术方案标准/00_标准说明.md",
+      "size": 544,
+      "sha256": "863b56506d74e259dc4450e4939c1d268f18e07080defca109cbb134473366bb"
+    },
+    {
+      "path": "00_技术方案标准/01_高质量技术方案写作标准.md",
+      "size": 1090,
+      "sha256": "66219184f74dbcb9740c3f7b169b81b15e8df711b9c4725dc5474b99c9d4cf3c"
+    },
+    {
+      "path": "00_技术方案标准/02_架构表达标准_C4_DDD_SDD.md",
+      "size": 844,
+      "sha256": "6dc552085330e4b9015e5cf64dc858d0b5432298912f3e59512ea020a7b91d93"
+    },
+    {
+      "path": "00_技术方案标准/03_DDD设计质量标准.md",
+      "size": 654,
+      "sha256": "ed5625b573e79c13a0455ab3c338d046e95d2dd150bf9b821950e347b7a33112"
+    },
+    {
+      "path": "00_技术方案标准/04_SDD开发准入标准.md",
+      "size": 604,
+      "sha256": "31577726660440d50ea4bc11d8a6411dbf04c0210e8130b51138447a8c853522"
+    },
+    {
+      "path": "00_技术方案标准/05_数据模型与DDL质量标准.md",
+      "size": 675,
+      "sha256": "120f7b93d1fe595c13e811dd681ee63c0ac05fdafe4df5f38d5fb6a454a51681"
+    },
+    {
+      "path": "00_技术方案标准/06_状态机与接口质量标准.md",
+      "size": 467,
+      "sha256": "cc3371dd8e2b1890e9fe79552a723055781105f72f784efc31622d3b476220c1"
+    },
+    {
+      "path": "00_技术方案标准/07_资金系统质量属性检查清单.md",
+      "size": 618,
+      "sha256": "d46cc8afc2282d13596f5cb5a881d776d387f94f20686c2794767626e9dd184c"
+    },
+    {
+      "path": "01_总览入口/00_方案总览.md",
+      "size": 1913,
+      "sha256": "d0ff2798b3e6bdd4e6d2f65697be92545057392abce0bead6bd40e57e74992f0"
+    },
+    {
+      "path": "01_总览入口/01_阅读路径.md",
+      "size": 964,
+      "sha256": "307b79924484203fe9d52ebfa519da0f4a080462a54c67b83a8413564a953c0d"
+    },
+    {
+      "path": "01_总览入口/02_本版变更说明.md",
+      "size": 756,
+      "sha256": "b2640793ad168b91b77438388b6b2cee2f39d2aa96ddf59521033edaa7371dfe"
+    },
+    {
+      "path": "01_总览入口/03_开发准入结论.md",
+      "size": 639,
+      "sha256": "b4e43d3c45324730e34fdebd55aabb1248eedd33be098121a2d97c214369eac9"
+    },
+    {
+      "path": "02_行业模型与设计原则/01_电商本地生活清结算参考模型.md",
+      "size": 1191,
+      "sha256": "f9b2b06385e82f48ad9147a6e3b8411197a7c1879327c5a26d693d44342b005d"
+    },
+    {
+      "path": "02_行业模型与设计原则/02_行业模型到本平台模型映射.md",
+      "size": 1172,
+      "sha256": "e361b22b7e39e9f5209c3dc098f42cb011975f96cb2871404828c1eb406b7d81"
+    },
+    {
+      "path": "02_行业模型与设计原则/03_设计原则与质量目标.md",
+      "size": 770,
+      "sha256": "818697d7ab4d1757f7f65592be06e54500e84e0dee0fa4fa5ff85d397073a084"
+    },
+    {
+      "path": "02_行业模型与设计原则/04_质量属性目标.md",
+      "size": 810,
+      "sha256": "9d475964c5eea042c557758eaa649beb424dc9307e94e0019a1ad2d78248a94f"
+    },
+    {
+      "path": "03_业务能力与系统边界/01_清结算能力地图.md",
+      "size": 802,
+      "sha256": "1b2fccd4d049b9f6f1ff5c2586a449e680909f7aa50aef181cf9f2beaaca7da7"
+    },
+    {
+      "path": "03_业务能力与系统边界/02_系统上下文与外部平台边界.md",
+      "size": 899,
+      "sha256": "e85a7b9ca05fba5ad70aeced0c441b537bf2ce6962df1c72b2e407f1ed48dc1f"
+    },
+    {
+      "path": "03_业务能力与系统边界/03_当前产品口径与底层领域口径隔离.md",
+      "size": 587,
+      "sha256": "b9dbfb7bf7df369d3cb3b120bb4a20d3b917bc5b0ee7ec649137f947219587ff"
+    },
+    {
+      "path": "03_业务能力与系统边界/04_本期范围与非范围.md",
+      "size": 563,
+      "sha256": "88c7678d52cbdba747688c6725d1baa3109c48fd4efe4d4cd2be0fe3336a12d9"
+    },
+    {
+      "path": "04_总体架构设计/01_C4_L1系统上下文.md",
+      "size": 766,
+      "sha256": "2e03b9b321ec2d8d8c08f20b6fb98212d82f3a8bdc59357389108d71c832d887"
+    },
+    {
+      "path": "04_总体架构设计/02_C4_L2容器与模块.md",
+      "size": 763,
+      "sha256": "f23b93f01530cae4b16bd7fe9d4bb918f10b9ac0f334e61bfb3a2d8da77ef400"
+    },
+    {
+      "path": "04_总体架构设计/03_C4_L3核心组件.md",
+      "size": 785,
+      "sha256": "8fefa025af354471ab24d2455c909e758302df8687ad63f901e9b1c757e61882"
+    },
+    {
+      "path": "04_总体架构设计/04_运行时主链路.md",
+      "size": 760,
+      "sha256": "e72dbc39e1d243d173ce4d0d2721f579f0119313e77f50b49f2d734b15f7aa86"
+    },
+    {
+      "path": "04_总体架构设计/05_数据血缘与资金追溯.md",
+      "size": 746,
+      "sha256": "f3c0d84e0d9a06f70d0edce3907cd36b92ca7a147a55d5b1d0836afba7b75965"
+    },
+    {
+      "path": "04_总体架构设计/06_架构质量属性视图.md",
+      "size": 746,
+      "sha256": "d7965c34013033240cc85d44c3a0bf9a4045e75e6642c5815a56e1c0982b5faf"
+    },
+    {
+      "path": "05_DDD领域设计/01_通用语言.md",
+      "size": 964,
+      "sha256": "ec66439a1160b740ab54eb0e6413c9b858b5aef1385d96576ce19df0c9038cfb"
+    },
+    {
+      "path": "05_DDD领域设计/02_限界上下文.md",
+      "size": 811,
+      "sha256": "f21c5764b7958870996a2c048949ee52741999be2dd5923ae8b1a198aed266bb"
+    },
+    {
+      "path": "05_DDD领域设计/03_聚合根与实体值对象.md",
+      "size": 910,
+      "sha256": "5da858763f2d591134f21c3df335eb06281052874317256ccd44cb4f15918fa2"
+    },
+    {
+      "path": "05_DDD领域设计/04_领域服务与不变量.md",
+      "size": 926,
+      "sha256": "824f5777cf47fc62df3b69002ca40ac326be05e3d5c29ccf9f18de2a72d04a51"
+    },
+    {
+      "path": "05_DDD领域设计/05_领域事件.md",
+      "size": 657,
+      "sha256": "c459bb50a69480e48c65e5eb7afeaa7a76ae0cc8fc4cee7d9d4899a46c475751"
+    },
+    {
+      "path": "06_策略与清分设计/01_清分结算策略定位.md",
+      "size": 646,
+      "sha256": "7115e57343b8dccff55c22acf4790f6c113957657155f059ca4f553b8fdd181a"
+    },
+    {
+      "path": "06_策略与清分设计/02_清分规则模型.md",
+      "size": 562,
+      "sha256": "db26405ce3790bf943e5c931d8415f2969ac301fcb89bee9b6539aedf6e06147"
+    },
+    {
+      "path": "06_策略与清分设计/03_账期策略模型.md",
+      "size": 572,
+      "sha256": "4143939c51a1eb17393497150f1165ee9c34c3f2fa7f5df63d5d772e2b0aff1c"
+    },
+    {
+      "path": "06_策略与清分设计/04_成本承担与分佣模型.md",
+      "size": 531,
+      "sha256": "6857093d4d90e4ecd03296a15bf1289a770ec7003c82b755d7560a57ed9e452b"
+    },
+    {
+      "path": "06_策略与清分设计/05_规则快照与历史可追溯.md",
+      "size": 510,
+      "sha256": "fdf696de9ddadfcb11730e70efa9c09be9ff0c17d992acdcc1a2d2f7a26d034a"
+    },
+    {
+      "path": "07_核心流程与状态机/01_来源事件接入流程.md",
+      "size": 515,
+      "sha256": "42977e8b9a4e6494b846116c96beb1ba9701a8f2e7bc822fe7d175e32db60200"
+    },
+    {
+      "path": "07_核心流程与状态机/02_清分流程.md",
+      "size": 561,
+      "sha256": "8398c917deb0135fe639c6574c4b8b8f344bf161f3d77087887101d2495ac588"
+    },
+    {
+      "path": "07_核心流程与状态机/03_清算与头寸成熟流程.md",
+      "size": 1032,
+      "sha256": "8dda8f356d09c5af835b79228546e533849a421902eafc94e029defcefcff611"
+    },
+    {
+      "path": "07_核心流程与状态机/04_结算确认流程.md",
+      "size": 684,
+      "sha256": "02ebf5e9d141032421d44ccbdf5810d320091d8f5a016db81002656e3adf25a8"
+    },
+    {
+      "path": "07_核心流程与状态机/05_账务入账流程.md",
+      "size": 589,
+      "sha256": "3ef18fac6f3d245d42607785e5cd0a367c7b35b6af53fd9695d7a987a5dc7f29"
+    },
+    {
+      "path": "07_核心流程与状态机/06_SourceEvent状态机.md",
+      "size": 730,
+      "sha256": "9ad8b3d1d12aeb1248306c17406c7d304c2022311df67020492b897bd405edf7"
+    },
+    {
+      "path": "07_核心流程与状态机/07_ClearingResult状态机.md",
+      "size": 758,
+      "sha256": "0740ea91c73a601cd7fa16886f10146d5988cf270ee47cad54f9513032f87f75"
+    },
+    {
+      "path": "07_核心流程与状态机/08_SettlementPosition状态机.md",
+      "size": 1133,
+      "sha256": "1291935c0650f357423d7317ef4a70a50d258e3d0d2eb07fd4bc0a3cb43747fb"
+    },
+    {
+      "path": "07_核心流程与状态机/09_SettlementBill状态机.md",
+      "size": 1056,
+      "sha256": "f93c9900eaa92dcb1752c1bae7067e9c0235969ee049a222d09a816016ddd14c"
+    },
+    {
+      "path": "07_核心流程与状态机/10_AccountingPostingOrder状态机.md",
+      "size": 898,
+      "sha256": "5185a17ee858d208a1f7e71fea08925bc7cd7f9c40d56fe5dbbff76acb58e21e"
+    },
+    {
+      "path": "07_核心流程与状态机/11_状态联动矩阵.md",
+      "size": 514,
+      "sha256": "679bd701df2eee2548c1ace4f5fcd201e9dda10ba3dd3b4b70dc7fa28ed2d121"
+    },
+    {
+      "path": "08_数据模型与存储设计/03_DDL_V008_P0.sql",
+      "size": 27541,
+      "sha256": "23412c970997cab09cda3814f8930c055d889033b02832482c19f0c5edef430c"
+    },
+    {
+      "path": "08_数据模型与存储设计/01_逻辑数据模型.md",
+      "size": 929,
+      "sha256": "b55c1c2150e6745251892dd16e104b1943557b971a7d961dec84ae04ca020d01"
+    },
+    {
+      "path": "08_数据模型与存储设计/02_核心表关系图.md",
+      "size": 471,
+      "sha256": "a8a58c7765fbeeef520314c5b31a8255a76546882a3f1e3d3b41f2b7d7d7ef29"
+    },
+    {
+      "path": "08_数据模型与存储设计/04_字段设计说明.md",
+      "size": 607,
+      "sha256": "f75b6173ea37b905c7f013651f53d60e6cc9bb3499f4ba3ba8720ca21481fdbe"
+    },
+    {
+      "path": "08_数据模型与存储设计/05_索引设计与查询场景.md",
+      "size": 735,
+      "sha256": "0405e8bf1695355b9d5e502dc6c0a09d5c016c306a78376f4b7aff97fb0ed0f2"
+    },
+    {
+      "path": "08_数据模型与存储设计/06_数据生命周期与开发期容量预案.md",
+      "size": 557,
+      "sha256": "eb18eab3322efd90f52aeb6abb36c3a3a76c1608a0bf122341396bdc378b9c86"
+    },
+    {
+      "path": "08_数据模型与存储设计/07_DDL_Entity_Mapper一致性检查.md",
+      "size": 445,
+      "sha256": "1310ea3f903a64fd5ebb95371a1932f3e19a315e5c1e5d6074a605879b422246"
+    },
+    {
+      "path": "09_接口契约与事件协议/openapi.yaml",
+      "size": 7891,
+      "sha256": "2ef18390a2f88cd106fcc6c1e2b02d7107e4008685ec0d008fb50ba9b5d03112"
+    },
+    {
+      "path": "09_接口契约与事件协议/01_接口设计原则.md",
+      "size": 493,
+      "sha256": "d0885c0697d96339f5372ea07642416978cfd43418648c03ece751c83fa7726a"
+    },
+    {
+      "path": "09_接口契约与事件协议/02_统一响应与错误结构.md",
+      "size": 667,
+      "sha256": "f913841ee3febddc373777d91d198218e44825b31863e49cd0af41e826f64198"
+    },
+    {
+      "path": "09_接口契约与事件协议/03_Command接口契约.md",
+      "size": 515,
+      "sha256": "8dbe4e744d1f12a2e0197b497620b37b3fc253e84f0e1b9da5bb923fde14a35a"
+    },
+    {
+      "path": "09_接口契约与事件协议/04_Query接口契约.md",
+      "size": 475,
+      "sha256": "8a90ed2b7351c49f00ae17541482b88d40529cfdfa519e67d1d3262443bb0a65"
+    },
+    {
+      "path": "09_接口契约与事件协议/05_Event事件契约.md",
+      "size": 644,
+      "sha256": "f9c792686db59b465aa01c83cc81403557dfce858af43a7b83efcd05ceda052f"
+    },
+    {
+      "path": "09_接口契约与事件协议/06_账务平台Port契约.md",
+      "size": 729,
+      "sha256": "eb80f3b7a25e56589c3177ee82c391c55d300d2511718b5a8706f1d9367a1bfa"
+    },
+    {
+      "path": "10_一致性_幂等_异常_补偿/01_事务边界.md",
+      "size": 597,
+      "sha256": "b2a9da25339f90ddd2fc55464b1cd241bb84f2eee747c2573f1319cb64958364"
+    },
+    {
+      "path": "10_一致性_幂等_异常_补偿/02_幂等与request_hash.md",
+      "size": 566,
+      "sha256": "827dca62b95a8c6509b4fdc1cb04728b9108c0b1ded4e05a1a5da93ce43fefbf"
+    },
+    {
+      "path": "10_一致性_幂等_异常_补偿/03_重复事件与乱序处理.md",
+      "size": 466,
+      "sha256": "3224639f153a3d07fc4f22567474f9ee6d26f5f18b74dcc2f2ee748befc275aa"
+    },
+    {
+      "path": "10_一致性_幂等_异常_补偿/04_账务UNKNOWN补偿.md",
+      "size": 671,
+      "sha256": "9f5daa7dd1878299f5faf029c390db7255bd0b1c51ed06f108127890cf28118f"
+    },
+    {
+      "path": "10_一致性_幂等_异常_补偿/05_金额校验与防错结.md",
+      "size": 485,
+      "sha256": "729baea48e5fdd897c5605a909235d46b9573a1fbc635f98f549b4b648fdbf99"
+    },
+    {
+      "path": "10_一致性_幂等_异常_补偿/06_失败重试与人工诊断.md",
+      "size": 524,
+      "sha256": "691bd09bbb8d9037fc42dfb61d3bad9a95830831a6c8f4aacaed33d87316879f"
+    },
+    {
+      "path": "11_可扩展性与大规模处理/01_多业务线接入扩展.md",
+      "size": 392,
+      "sha256": "7101c522798545c678293fbb89858e69f4b047b84f3c2ce0aea00598f529046f"
+    },
+    {
+      "path": "11_可扩展性与大规模处理/02_多参与方清分扩展.md",
+      "size": 442,
+      "sha256": "c2a73754b652ef32b6d21b4f1339f8853e3644b61f0d31a6a2a7620e3edc340a"
+    },
+    {
+      "path": "11_可扩展性与大规模处理/03_策略扩展.md",
+      "size": 393,
+      "sha256": "404192f6b4a42d119e4b77b05684063338cbe86a5908ac4548643d52b9d45ea2"
+    },
+    {
+      "path": "11_可扩展性与大规模处理/04_批量处理与任务调度.md",
+      "size": 577,
+      "sha256": "559d97ccacf0d4094248676258bdd5273c11d9ccbcca9afbe5e20d10b9173739"
+    },
+    {
+      "path": "11_可扩展性与大规模处理/05_读写分离与查询投影.md",
+      "size": 367,
+      "sha256": "77e450706d66d86a641e4147d3b6be3cd39c50fac03ce00da63cfbb3d57b164c"
+    },
+    {
+      "path": "11_可扩展性与大规模处理/06_容量与性能预案.md",
+      "size": 290,
+      "sha256": "2207b0f139292b61a4b755c0ab267ca938f4fdde4bda4d8c7818eba24299e840"
+    },
+    {
+      "path": "12_可观测性与开发诊断/01_指标体系.md",
+      "size": 487,
+      "sha256": "9ee505c5f23501e73f9d0e93963a6d95e6581770e75043e8c471c00640a1fa0b"
+    },
+    {
+      "path": "12_可观测性与开发诊断/02_日志与Trace规范.md",
+      "size": 272,
+      "sha256": "fe4054bd0f899dc75b89b797b1774ce891609595160dcbd24279bbca015a0ccb"
+    },
+    {
+      "path": "12_可观测性与开发诊断/03_后台诊断与人工处理.md",
+      "size": 341,
+      "sha256": "33604af202681a6e592d16392b65dc71a7819ec78138c4717b2f524968744bab"
+    },
+    {
+      "path": "12_可观测性与开发诊断/04_审计与操作日志.md",
+      "size": 222,
+      "sha256": "e1518dc7415b04072b3e9cce6918b3fad6ef7f11571728a9bbc28ddf2746623c"
+    },
+    {
+      "path": "13_测试验收/01_架构验收清单.md",
+      "size": 470,
+      "sha256": "4369fa5ce59d0d06579ee23cae5aec9b619dce0d2a8e036a959b0472aa8a885e"
+    },
+    {
+      "path": "13_测试验收/02_状态机测试矩阵.md",
+      "size": 500,
+      "sha256": "5500a333bc3f2fbdfbfba849fa4e7b596633b98286b2a27cc8e1a5af4ece9e7c"
+    },
+    {
+      "path": "13_测试验收/03_资金准确性测试.md",
+      "size": 428,
+      "sha256": "07ccc5a400df4cf3700dd29e54fbd7a065a0c03d85fa117ec902ba1e7e8933f3"
+    },
+    {
+      "path": "13_测试验收/04_幂等并发测试.md",
+      "size": 397,
+      "sha256": "37322976e218cac0676d7f1f04061df74698126193f9fe14842c5b4916aa8f0a"
+    },
+    {
+      "path": "13_测试验收/05_账务异常补偿测试.md",
+      "size": 378,
+      "sha256": "3068d2b471d2f1e798fece57de8ce962e9da5647e1c9fab31019cbdbd87e7913"
+    },
+    {
+      "path": "13_测试验收/06_接口契约测试.md",
+      "size": 245,
+      "sha256": "138c50872104a09df4994870f10312a062f41ad31061014f5ce2feea509dd45a"
+    },
+    {
+      "path": "13_测试验收/07_性能与批量测试.md",
+      "size": 352,
+      "sha256": "ae5103d237f81d536117b5b3b0dfc67a94f75165efbf46e8e26aa66004b52ac3"
+    },
+    {
+      "path": "14_代码落地任务包/01_工程结构与包设计.md",
+      "size": 414,
+      "sha256": "b714b1d45e5f6a034e0b97804848928950306c0da6f30062ca4c34b53fb5a3eb"
+    },
+    {
+      "path": "14_代码落地任务包/02_类职责清单.md",
+      "size": 488,
+      "sha256": "8e556b02fc9c03933989074602e2d7940cb4bea818560d79e86fd016ebcf1580"
+    },
+    {
+      "path": "14_代码落地任务包/03_Codex开发任务卡.md",
+      "size": 1913,
+      "sha256": "97869d522319fdc290e7dc8c74bafc605b735188c7236ed9d87c7da9f51162dd"
+    },
+    {
+      "path": "14_代码落地任务包/04_任务依赖图.md",
+      "size": 358,
+      "sha256": "9f6d7e3aa676b387747b9115bde420efe2e2d9b4ea1d4ae0ba675a430609956e"
+    },
+    {
+      "path": "14_代码落地任务包/05_开发准出清单.md",
+      "size": 491,
+      "sha256": "a1b07c7e1b8aca2bf6e0b1f35b0c57d8865a16ff8faba7c838fcc182791e6b49"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-001_采用标准清结算主模型.md",
+      "size": 419,
+      "sha256": "655f3d9a626bf03a55e6667bbba660a59928ea40e289c9a09b02fd52066302ce"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-002_清分清算结算分离.md",
+      "size": 378,
+      "sha256": "a7d94f4a08c64073c542ac80f657fbd096cbd641dc4a5abf120d5c3986c7cb04"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-003_使用SettlementPosition表达结算头寸.md",
+      "size": 401,
+      "sha256": "a02ac833813f76455e78a60924e5653c402425ccaf2fb6be71c0147639c989f3"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-004_账务对接采用Port适配.md",
+      "size": 373,
+      "sha256": "c1359d93afbbaa2ec7dfb046109abd2cbdf7546e14a0b357bcef6905dd298778"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-005_P0不做冻结退款出款.md",
+      "size": 342,
+      "sha256": "90ad7322c80b27853e798f6665de32230d66d525c105c8864da6969c965ce081"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-006_BFF展示口径不反向定义底层模型.md",
+      "size": 335,
+      "sha256": "898a1823898c31d20a95f5bb33cb50dbdefba701b16feb88d4d81ad3095efe13"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-007_清分明细采用多参与方金额项模型.md",
+      "size": 383,
+      "sha256": "28ddec439d9e2fb9b0ea8a15763919643d15745480bc00d361cc5db1f4a295f5"
+    },
+    {
+      "path": "15_架构决策记录_ADR/ADR-008_request_hash幂等冲突治理.md",
+      "size": 400,
+      "sha256": "adc15e9e429e7510907ecdea1676b225e7c838a99918081adb333785dd371619"
+    },
+    {
+      "path": "16_交付总览/00_清结算平台V008正式开发方案总览.md",
+      "size": 1370,
+      "sha256": "1574c16f2c964c5baac6a9bed80f11e1b99d69688331ae1dc990387b1242ab54"
+    },
+    {
+      "path": "16_交付总览/00_清结算平台V008正式开发方案总览.docx",
+      "size": 669102,
+      "sha256": "529ce74ce3f30f904911f82e72ebca116d953e7d8ec2e3ab1f03267c740d4d68"
+    },
+    {
+      "path": "99_参考输入/README.md",
+      "size": 430,
+      "sha256": "111ad88e1c7a0897488c11ed21dbd730cb153d750ad989e35a692862b4a11e9f"
+    },
+    {
+      "path": "99_参考输入/本地生活_美食封板_V001_20260613.zip",
+      "size": 44145762,
+      "sha256": "84a853662d51f862312bbb178462449b34a90fa20239e36feaa830acec7babc8"
+    },
+    {
+      "path": "99_参考输入/docs_整体技术方案_正式版_V2.69_普通商品结算TRANSFER准入前提与余额不足闭环版(1).zip",
+      "size": 51126073,
+      "sha256": "large-file-not-hashed"
+    },
+    {
+      "path": "99_参考输入/粘贴的文本 (1)(100).txt",
+      "size": 20780,
+      "sha256": "2a365a80af48ac7ed418246999342cef774df26bc09976a407cf3c43b08ff3a5"
+    },
+    {
+      "path": "assets/diagrams/01_capability_map.png",
+      "size": 90728,
+      "sha256": "1d27efd20d260545dd7d95b14d775c88ced5a2a9d3f0752f865b3ebdac4008d7"
+    },
+    {
+      "path": "assets/diagrams/01_capability_map.svg",
+      "size": 9715,
+      "sha256": "5db12f921d4c9f770f9f874152d605664e772198f244e97d959187c64f5bb875"
+    },
+    {
+      "path": "assets/diagrams/02_c1_system_context.png",
+      "size": 131629,
+      "sha256": "d2e1ac8ef26d2ca4ef5c080586fe570fd166b73dae58fd6813789e19c8089a33"
+    },
+    {
+      "path": "assets/diagrams/02_c1_system_context.svg",
+      "size": 8687,
+      "sha256": "20510499169a29a17987a5059fb028d5cb9b344d879b8435011946ea51638e02"
+    },
+    {
+      "path": "assets/diagrams/03_c2_container_modules.png",
+      "size": 113197,
+      "sha256": "00ebec9669af9b64f43c49f07cbba61287222873a17d84d74afc24db36c8b9fd"
+    },
+    {
+      "path": "assets/diagrams/03_c2_container_modules.svg",
+      "size": 15540,
+      "sha256": "4a4d3f228a1d0beadcc6dba1477b54049b938c79802107374f0ea0c534cb972d"
+    },
+    {
+      "path": "assets/diagrams/04_ddd_context_map.png",
+      "size": 111953,
+      "sha256": "f57b88e60a4da8fd7b0a94893f7d7b7fec599e2efab5dbf3314d2d0a79605f88"
+    },
+    {
+      "path": "assets/diagrams/04_ddd_context_map.svg",
+      "size": 9592,
+      "sha256": "4b4e6df9196f16534bde4caa601b24c2ed52d7b086222883cff6a27083f86a3a"
+    },
+    {
+      "path": "assets/diagrams/05_runtime_main_flow.png",
+      "size": 105375,
+      "sha256": "d53baa647bc28b90463a72aaf147b95ceece22c2a3bbc512887af42fb3e185e2"
+    },
+    {
+      "path": "assets/diagrams/05_runtime_main_flow.svg",
+      "size": 9179,
+      "sha256": "f61ee4d5ffbdb107827bcc44bdfb5415218cfc230a4b43484e637e8a09a7682b"
+    },
+    {
+      "path": "assets/diagrams/06_state_lifecycle.png",
+      "size": 71930,
+      "sha256": "8d9094f8a3de3b39eeaac3db785084b442d099e7f09bc7f2b9063786926f116d"
+    },
+    {
+      "path": "assets/diagrams/06_state_lifecycle.svg",
+      "size": 6200,
+      "sha256": "c1fd84bcd11a891a2c999bca73e6390a0686acaa22b216e8c49a2826ea3839e5"
+    },
+    {
+      "path": "assets/diagrams/07_data_lineage.png",
+      "size": 34954,
+      "sha256": "e885fd269254e80f3b6197ffb0e61713cf76e9ad060015de3096a5cb2586d3e9"
+    },
+    {
+      "path": "assets/diagrams/07_data_lineage.svg",
+      "size": 7598,
+      "sha256": "a69df964ae60f4620cc33b29176419afe56fe69915aeb25418db622bc6fa9ef4"
+    },
+    {
+      "path": "assets/diagrams/08_core_table_relation.png",
+      "size": 43199,
+      "sha256": "fd15c48dc93b837e69c81a4267fed23d1a34211d4b4ea075d8475253549755dc"
+    },
+    {
+      "path": "assets/diagrams/08_core_table_relation.svg",
+      "size": 7476,
+      "sha256": "5869282ddeb69e1ac1380dbbb503bfedf005f00a4f85115f2487858d2c03e268"
+    },
+    {
+      "path": "assets/diagrams/09_quality_attribute_map.png",
+      "size": 80733,
+      "sha256": "9663990ae2c389def51b211bb51a109df20ab20385e82061eae12c4aa8e49e66"
+    },
+    {
+      "path": "assets/diagrams/09_quality_attribute_map.svg",
+      "size": 8516,
+      "sha256": "41e6eaa87ce3f06db730513e50c4ff1f95b5a939478bb003b616b75c571562c6"
+    }
+  ]
+}
