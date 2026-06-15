@@ -16,3 +16,14 @@
 
 1. 幂等键相同、request_hash 相同：返回原结果。
 2. 幂等键相同、request_hash 不同：拒绝并返回 `CCS_IDEMPOTENT_CONFLICT`。
+
+## V009 策略写入幂等补充
+
+策略创建、策略版本创建、策略绑定创建都必须遵循相同幂等规则：
+
+```text
+同一 idempotent_key + 相同 request_hash -> 返回原结果
+同一 idempotent_key + 不同 request_hash -> 返回 IDEMPOTENT_CONFLICT
+```
+
+策略绑定不能使用 MySQL 部分唯一索引表达“active 唯一”。P0 通过应用层在写入前校验同一对象、生效区间、策略优先级冲突，数据库层使用普通索引支持查询。

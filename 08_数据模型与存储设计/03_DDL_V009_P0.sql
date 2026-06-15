@@ -1,6 +1,7 @@
--- 清结算平台 V008 P0 DDL
+-- 清结算平台 V009 P0 DDL
 -- 约定：金额字段 BIGINT，单位分，人民币；比例字段 ratio_bp，10000 = 100%。
--- P0 不设计非 P0 状态、逆向交易、出款、币种、多租户字段。
+-- V009 吸收行业案例中的结算模式、结算周期、发起方式、最小/最大结算金额、留存金额、规则绑定对象等成熟能力。
+-- P0 不设计退款、冻结/止付、自动出款、币种、多租户字段；相关能力仅作为 P1/P2 扩展上下文。
 
 
 CREATE TABLE ccs_settlement_policy (
@@ -37,7 +38,15 @@ CREATE TABLE ccs_settlement_policy_version (
   policy_no VARCHAR(64) NOT NULL COMMENT '策略编号',
   version_no BIGINT NOT NULL COMMENT '策略版本号',
   version_status VARCHAR(32) NOT NULL DEFAULT 'DRAFT' COMMENT '版本状态：DRAFT/EFFECTIVE/EXPIRED/CANCELED',
-  settlement_cycle_type VARCHAR(32) NOT NULL DEFAULT 'T_PLUS_N' COMMENT '账期类型：T_PLUS_N/PERIODIC/MANUAL',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式：INTERNAL_ACCOUNT/DIRECT_BANK/EXTERNAL_PAYOUT，P0 固定 INTERNAL_ACCOUNT',
+  initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式：OPERATOR_MANUAL/AUTO/MERCHANT_SELF_SERVICE，P0 固定 OPERATOR_MANUAL',
+  auto_settlement_enabled TINYINT NOT NULL DEFAULT 0 COMMENT '是否启用自动结算，P0 固定 0',
+  min_settlement_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '最小结算金额，单位分，0 表示不限制',
+  max_settlement_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '最大结算金额，单位分，0 表示不限制',
+  reserve_policy_type VARCHAR(32) NOT NULL DEFAULT 'NONE' COMMENT '留存策略：NONE/FIXED/RATIO，P0 默认 NONE',
+  reserve_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '固定留存金额，单位分，P0 默认 0',
+  reserve_ratio_bp INT NOT NULL DEFAULT 0 COMMENT '留存比例，basis point，10000=100%，P0 默认 0',
+  settlement_cycle_type VARCHAR(32) NOT NULL DEFAULT 'T_PLUS_N' COMMENT '账期类型：S0/D0/D1/T1/T_PLUS_N/PERIODIC/MANUAL',
   cycle_basis VARCHAR(32) NOT NULL DEFAULT 'FULFILLMENT_TIME' COMMENT '账期起点：WRITE_OFF_TIME/FULFILLMENT_TIME/PAY_TIME',
   cycle_days INT NOT NULL DEFAULT 0 COMMENT '账期天数',
   effective_start_time DATETIME(3) NOT NULL COMMENT '生效开始时间',
@@ -58,6 +67,30 @@ CREATE TABLE ccs_settlement_policy_version (
   KEY idx_policy_version_status (policy_no, version_status, effective_start_time, effective_end_time)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='清分结算策略版本表';
 
+CREATE TABLE ccs_settlement_policy_binding (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  binding_no VARCHAR(64) NOT NULL COMMENT '策略绑定编号',
+  binding_subject_type VARCHAR(64) NOT NULL COMMENT '绑定对象类型：GLOBAL/BUSINESS_SCENE/CATEGORY/MERCHANT/CHANNEL/CAMPAIGN',
+  binding_subject_no VARCHAR(128) NOT NULL DEFAULT '*' COMMENT '绑定对象编号，GLOBAL 使用 *',
+  business_scene VARCHAR(64) NOT NULL COMMENT '业务场景',
+  policy_no VARCHAR(64) NOT NULL COMMENT '策略编号',
+  binding_priority INT NOT NULL DEFAULT 100 COMMENT '绑定优先级，数值越小优先级越高',
+  effective_start_time DATETIME(3) NOT NULL COMMENT '生效开始时间',
+  effective_end_time DATETIME(3) DEFAULT NULL COMMENT '生效结束时间，空表示长期有效',
+  binding_status VARCHAR(32) NOT NULL DEFAULT 'ACTIVE' COMMENT '绑定状态：ACTIVE/DISABLED/EXPIRED',
+  operator_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '操作人编号',
+  idempotent_key VARCHAR(128) NOT NULL COMMENT '幂等键',
+  request_hash VARCHAR(128) NOT NULL COMMENT '请求核心参数指纹',
+  version BIGINT NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  deleted TINYINT NOT NULL DEFAULT 0 COMMENT '逻辑删除标记',
+  create_time DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  update_time DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_policy_binding_no (binding_no),
+  UNIQUE KEY uk_policy_binding_idempotent (idempotent_key),
+  KEY idx_binding_subject (binding_subject_type, binding_subject_no, business_scene, binding_status, binding_priority),
+  KEY idx_binding_policy (policy_no, binding_status, effective_start_time, effective_end_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='清分结算策略绑定表';
 
 CREATE TABLE ccs_policy_rule (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -216,6 +249,10 @@ CREATE TABLE ccs_settlement_position (
   source_fulfillment_no VARCHAR(128) NOT NULL COMMENT '来源履约/核销号',
   merchant_no VARCHAR(64) NOT NULL COMMENT '商户编号',
   business_scene VARCHAR(64) NOT NULL COMMENT '业务场景',
+  policy_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略编号',
+  policy_version_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略版本编号',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 INTERNAL_ACCOUNT',
+  initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式，P0 OPERATOR_MANUAL',
   participant_role VARCHAR(64) NOT NULL COMMENT '参与方角色',
   participant_type VARCHAR(64) NOT NULL DEFAULT '' COMMENT '参与方类型',
   participant_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '参与方编号',
@@ -243,6 +280,7 @@ CREATE TABLE ccs_settlement_position (
   UNIQUE KEY uk_position_clearing_item (clearing_item_no),
   KEY idx_position_eligible (lifecycle_status, eligible_time, id),
   KEY idx_position_merchant (merchant_no, business_scene, lifecycle_status),
+  KEY idx_position_policy (policy_no, policy_version_no, lifecycle_status),
   KEY idx_position_bill (locked_bill_no),
   KEY idx_position_order (source_order_no, source_fulfillment_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='结算头寸表';
@@ -252,6 +290,10 @@ CREATE TABLE ccs_settlement_batch (
   batch_no VARCHAR(64) NOT NULL COMMENT '结算批次号',
   batch_type VARCHAR(32) NOT NULL DEFAULT 'MANUAL' COMMENT '批次类型：MANUAL/AUTO',
   business_scene VARCHAR(64) NOT NULL COMMENT '业务场景',
+  policy_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略编号',
+  policy_version_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略版本编号',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 INTERNAL_ACCOUNT',
+  initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式，P0 OPERATOR_MANUAL',
   merchant_no VARCHAR(64) NOT NULL COMMENT '商户编号',
   participant_role VARCHAR(64) NOT NULL COMMENT '结算主体角色',
   participant_no VARCHAR(64) NOT NULL COMMENT '结算主体编号',
@@ -271,6 +313,7 @@ CREATE TABLE ccs_settlement_batch (
   UNIQUE KEY uk_batch_no (batch_no),
   UNIQUE KEY uk_batch_idempotent (idempotent_key),
   KEY idx_batch_merchant (merchant_no, business_scene, batch_status),
+  KEY idx_batch_policy (policy_no, policy_version_no, batch_status),
   KEY idx_batch_time (create_time)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='结算批次表';
 
@@ -282,6 +325,10 @@ CREATE TABLE ccs_settlement_bill (
   biz_domain VARCHAR(64) NOT NULL COMMENT '业务域',
   biz_no VARCHAR(128) NOT NULL COMMENT '业务编号',
   business_scene VARCHAR(64) NOT NULL COMMENT '业务场景',
+  policy_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略编号',
+  policy_version_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '命中策略版本编号',
+  settlement_mode VARCHAR(32) NOT NULL DEFAULT 'INTERNAL_ACCOUNT' COMMENT '结算模式，P0 INTERNAL_ACCOUNT',
+  initiation_mode VARCHAR(32) NOT NULL DEFAULT 'OPERATOR_MANUAL' COMMENT '发起方式，P0 OPERATOR_MANUAL',
   merchant_no VARCHAR(64) NOT NULL COMMENT '商户编号',
   participant_role VARCHAR(64) NOT NULL COMMENT '结算主体角色',
   participant_no VARCHAR(64) NOT NULL COMMENT '结算主体编号',
@@ -289,7 +336,11 @@ CREATE TABLE ccs_settlement_bill (
   settlement_period_start_time DATETIME(3) NOT NULL COMMENT '结算周期开始时间',
   settlement_period_end_time DATETIME(3) NOT NULL COMMENT '结算周期结束时间',
   position_count INT NOT NULL DEFAULT 0 COMMENT '头寸数量',
-  total_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '结算总金额，单位分，人民币',
+  total_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '结算明细汇总金额，单位分，人民币',
+  reserve_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '留存金额，单位分，P0 默认 0',
+  posting_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '本次应入账金额，单位分，等于 total_amount_cent - reserve_amount_cent',
+  min_settlement_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '生成本结算单时适用的最小结算金额，单位分',
+  max_settlement_amount_cent BIGINT NOT NULL DEFAULT 0 COMMENT '生成本结算单时适用的最大结算金额，单位分',
   bill_status VARCHAR(32) NOT NULL DEFAULT 'CREATED' COMMENT '结算单状态：CREATED/CONFIRMED/ACCOUNTING_PROCESSING/ACCOUNTED/ACCOUNTING_FAILED/UNKNOWN/CANCELED',
   accounting_posting_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账务入账单号',
   accounting_request_no VARCHAR(64) NOT NULL DEFAULT '' COMMENT '账务请求号',
@@ -307,6 +358,7 @@ CREATE TABLE ccs_settlement_bill (
   UNIQUE KEY uk_bill_biz (caller_system, biz_domain, biz_no, settlement_scene),
   KEY idx_bill_batch (batch_no),
   KEY idx_bill_merchant (merchant_no, business_scene, bill_status),
+  KEY idx_bill_policy (policy_no, policy_version_no, bill_status),
   KEY idx_bill_accounting (accounting_posting_no, accounting_request_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='结算单主表';
 

@@ -1,0 +1,43 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", margin=0.2, nodesep=0.55, ranksep=0.8];
+  node [shape=rect, style="rounded,filled", fontname="Noto Sans CJK SC", fontsize=12, fillcolor="#F8FAFC", color="#CBD5E1"];
+  edge [fontname="Noto Sans CJK SC", fontsize=10, color="#64748B"];
+  subgraph cluster_src { label="行业案例输入"; fontname="Noto Sans CJK SC"; color="#CBD5E1";
+    a1 [label="银行收单
+T/D/S 账期、虚拟户、最小/最大结算、留存"];
+    a2 [label="推广/分佣平台
+规则绑定对象、通用规则 + 特例规则"];
+    a3 [label="积分/电商结算
+订单清分、结算账单、对账意识"];
+    a4 [label="传统行业税票/付款
+发票、付款单、收款单"];
+  }
+  subgraph cluster_absorb { label="吸收为清结算平台通用能力"; fontname="Noto Sans CJK SC"; color="#CBD5E1";
+    b1 [label="ClearingSettlementPolicy
+清分结算策略"];
+    b2 [label="PolicyBinding
+策略绑定模型"];
+    b3 [label="SettlementMode
+INTERNAL_ACCOUNT / DIRECT_BANK / EXTERNAL_PAYOUT"];
+    b4 [label="InitiationMode
+OPERATOR_MANUAL / AUTO / MERCHANT_SELF_SERVICE"];
+    b5 [label="Min/Max/Reserve
+最小/最大/留存策略"];
+    b6 [label="Data Lineage
+账单与对账埋点"];
+  }
+  subgraph cluster_cut { label="P0 裁剪"; fontname="Noto Sans CJK SC"; color="#CBD5E1";
+    c1 [label="P0 实现
+内部账户入账 + 后台手动结算
+核销后 D+N"];
+    c2 [label="P1/P2 预留
+自动/自助结算、直接打款、留存、对账中心"];
+    c3 [label="不进入 P0
+发票、收款、付款、税务、出款"];
+  }
+  a1 -> b1; a1 -> b3; a1 -> b4; a1 -> b5;
+  a2 -> b2; a2 -> b1;
+  a3 -> b6; a3 -> b1;
+  a4 -> c3;
+  b1 -> c1; b2 -> c1; b3 -> c1; b4 -> c1; b5 -> c2; b6 -> c2;
+}

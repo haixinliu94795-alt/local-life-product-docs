@@ -1,0 +1,23 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", margin=0.2, nodesep=0.5, ranksep=0.7];
+  node [shape=rect, style="rounded,filled", fontname="Noto Sans CJK SC", fontsize=12, fillcolor="#F8FAFC", color="#CBD5E1"];
+  edge [fontname="Noto Sans CJK SC", fontsize=10, color="#475569"];
+  source [label="结算单 SettlementBill"];
+  m1 [label="INTERNAL_ACCOUNT
+入账到平台内部商户账户
+P0 实现"];
+  m2 [label="DIRECT_BANK
+直接打款到银行账户
+P1/P2 出款适配"];
+  m3 [label="EXTERNAL_PAYOUT
+调用外部代付/出款通道
+P1/P2 出款适配"];
+  acc [label="账户账务平台
+记录余额与流水"];
+  payout [label="出款/提现平台
+非 P0"];
+  source -> m1; source -> m2; source -> m3;
+  m1 -> acc [label="postSettlement"];
+  m2 -> payout [label="future payout"];
+  m3 -> payout [label="future payout"];
+}

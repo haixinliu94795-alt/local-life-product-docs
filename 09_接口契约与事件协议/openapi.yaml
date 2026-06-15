@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Clearing Settlement Platform P0 API
-  version: V008
+  version: V009
   description: P0 APIs for local-life positive clearing and settlement.
 servers:
   - url: /api
@@ -51,6 +51,14 @@ components:
         scopeKey: { type: string, example: '*' }
         businessScene: { type: string }
         priority: { type: integer, default: 100 }
+        settlementMode: { type: string, enum: [INTERNAL_ACCOUNT, DIRECT_BANK, EXTERNAL_PAYOUT], default: INTERNAL_ACCOUNT, description: P0 only INTERNAL_ACCOUNT. }
+        initiationMode: { type: string, enum: [OPERATOR_MANUAL, AUTO, MERCHANT_SELF_SERVICE], default: OPERATOR_MANUAL, description: P0 only OPERATOR_MANUAL. }
+        autoSettlementEnabled: { type: boolean, default: false }
+        minSettlementAmountCent: { type: integer, format: int64, default: 0 }
+        maxSettlementAmountCent: { type: integer, format: int64, default: 0 }
+        reservePolicyType: { type: string, enum: [NONE, FIXED, RATIO], default: NONE }
+        reserveAmountCent: { type: integer, format: int64, default: 0 }
+        reserveRatioBp: { type: integer, default: 0, description: Basis point, 10000 = 100%. }
         effectiveStartTime: { type: string, format: date-time }
         effectiveEndTime: { type: string, format: date-time, nullable: true }
         idempotentKey: { type: string }
@@ -78,6 +86,20 @@ components:
                     allocationType: { type: string, enum: [RATIO, FIXED] }
                     ratioBp: { type: integer, description: Basis point, 10000 = 100%. }
                     fixedAmountCent: { type: integer, format: int64 }
+    PolicyBindingCommand:
+      type: object
+      required: [bindingSubjectType, bindingSubjectNo, businessScene, policyNo, effectiveStartTime, idempotentKey, requestHash]
+      properties:
+        bindingSubjectType: { type: string, enum: [GLOBAL, BUSINESS_SCENE, CATEGORY, MERCHANT, CHANNEL, CAMPAIGN] }
+        bindingSubjectNo: { type: string, maxLength: 128, example: '*' }
+        businessScene: { type: string, maxLength: 64 }
+        policyNo: { type: string, maxLength: 64 }
+        bindingPriority: { type: integer, default: 100 }
+        effectiveStartTime: { type: string, format: date-time }
+        effectiveEndTime: { type: string, format: date-time, nullable: true }
+        operatorNo: { type: string, maxLength: 64 }
+        idempotentKey: { type: string, maxLength: 128 }
+        requestHash: { type: string, maxLength: 128 }
     ConfirmSettlementCommand:
       type: object
       required: [callerSystem, bizDomain, bizNo, merchantNo, businessScene, positionNos, operatorNo, idempotentKey, requestHash]
@@ -167,6 +189,16 @@ paths:
           name: businessScene
           required: true
           schema: { type: string }
+      responses:
+        '200': { description: OK }
+  /admin/ccs/policy-bindings:
+    post:
+      summary: Bind a clearing and settlement policy to a business subject.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PolicyBindingCommand' }
       responses:
         '200': { description: OK }
   /admin/ccs/positions/eligible:

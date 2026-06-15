@@ -9,7 +9,7 @@
 
 ## Task 02：落 DDL、Entity、Mapper、Repository
 
-- 输入：`08_数据模型与存储设计/03_DDL_V008_P0.sql`。
+- 输入：`08_数据模型与存储设计/03_DDL_V009_P0.sql`。
 - 输出：Entity、Mapper、Repository。
 - 禁止：字段名自由发挥。
 - 验收：DDL-Entity-Mapper 一致。
@@ -55,3 +55,18 @@
 - 输入：`13_测试验收`。
 - 输出：单元、集成、契约测试。
 - 验收：任务卡准出通过。
+
+## V009 新增开发任务
+
+### Task 11：实现清分结算策略绑定能力
+
+- 依据：`06_策略与清分设计/08_策略绑定模型.md`
+- 新增表：`ccs_settlement_policy_binding`
+- 新增服务：`PolicyBindingApplicationService`、`PolicyMatchDomainService`
+- 验收：GLOBAL/BUSINESS_SCENE/MERCHANT 三类绑定可创建，策略匹配优先级正确。
+
+### Task 12：补策略版本结算模式与金额阈值字段
+
+- 依据：`06_策略与清分设计/06_结算模式与发起方式.md`、`06_策略与清分设计/07_最小最大金额与留存金额策略.md`
+- 修改：Entity、Mapper、DTO、OpenAPI 与 DDL 保持一致。
+- 验收：P0 默认 INTERNAL_ACCOUNT、OPERATOR_MANUAL、无留存、无阈值限制。

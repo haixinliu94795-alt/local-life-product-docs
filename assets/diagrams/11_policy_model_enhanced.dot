@@ -1,0 +1,37 @@
+digraph G {
+  graph [rankdir=TB, bgcolor="white", margin=0.2, nodesep=0.45, ranksep=0.65];
+  node [shape=rect, style="rounded,filled", fontname="Noto Sans CJK SC", fontsize=12, fillcolor="#F8FAFC", color="#CBD5E1"];
+  edge [fontname="Noto Sans CJK SC", fontsize=10, color="#475569"];
+  p [label="ClearingSettlementPolicy
+策略主表
+policy_no / scope / priority"];
+  v [label="PolicyVersion
+账期、结算模式、发起方式
+最小/最大金额、留存策略"];
+  r [label="PolicyRule
+规则类型
+账期 / 分配 / 成本 / 分佣"];
+  pr [label="PolicyRuleParticipant
+参与方规则
+角色、比例、固定金额、方向"];
+  b [label="PolicyBinding
+绑定对象
+GLOBAL / 业务线 / 类目 / 商户 / 活动"];
+  s [label="PolicySnapshot
+清分和结算时落快照
+历史可追溯"];
+  cr [label="ClearingResult
+清分结果"];
+  pos [label="SettlementPosition
+结算头寸"];
+  bill [label="SettlementBill
+结算单"];
+  p -> v [label="1:N 版本"];
+  v -> r [label="1:N 规则"];
+  r -> pr [label="1:N 参与方"];
+  b -> p [label="引用策略"];
+  v -> s [label="发布后形成快照"];
+  s -> cr [label="清分命中"];
+  s -> pos [label="头寸继承策略口径"];
+  s -> bill [label="结算单固化策略"];
+}
